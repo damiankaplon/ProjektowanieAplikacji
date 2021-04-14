@@ -1,20 +1,24 @@
+import Data.Data;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 
 public class App extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
 
+    private Data data = new Data();
     private JButton toolBarButtonExit, toolBarButtonSave;
     private JMenuItem exit, saveToFile;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private JTable table;
+    private JTextField enteredNumber;
+    private JSpinner rowNumber, columnNumber;
 
 
     public App() {
@@ -48,7 +52,7 @@ public class App extends JFrame implements ActionListener {
      * WIDTH_FRAME and HEIGHT_FRAME
      * --------------------------------------------------------------
      *
-     * @return Dimenosion (frameSize) which is, calculated, preferred size for GUI
+     * @return Dimension (frameSize) which is, calculated, preferred size for GUI
      */
     private Dimension setWindowSize() {
 
@@ -101,7 +105,7 @@ public class App extends JFrame implements ActionListener {
 
     /**
      * @param name     name of Menu
-     * @param keyEvent shorcut key
+     * @param keyEvent shortcut key
      * @return created JMenu
      */
     private JMenu createJMenu(String name, int keyEvent) {
@@ -158,24 +162,34 @@ public class App extends JFrame implements ActionListener {
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel();
         FormLayout formLayout = new FormLayout(
-                "5dlu,30dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,3dlu,30dlu,5dlu",
-                "5dlu,15dlu,3dlu,15dlu,3dlu,15dlu,3dlu,15dlu,15dlu,3dlu,15dlu,3dlu,15dlu,15dlu,15dlu,5dlu"
+                "5dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,5dlu",
+                "5dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,30dlu,5dlu"
         );
         centerPanel.setLayout(formLayout);
-        String[] columnSpec = {"A", "B", "C", "D"};
-        Float[][] data = {
-                {new Float(1),new Float(1),new Float(1),new Float(1)},
-                {new Float(1),new Float(1),new Float(1),new Float(1)},
-                {new Float(1),new Float(1),new Float(1),new Float(1)},
-                {new Float(1),new Float(1),new Float(1),new Float(1)},
-                {new Float(1),new Float(1),new Float(1),new Float(1)},
-                {new Float(1),new Float(1),new Float(1),new Float(1)}
-        };
-        this.table = new JTable(data,columnSpec);
+
+        String[] columnNames = this.data.getColumnNames().toArray(new String[4]);
+        Object[][] data = this.data.getData();
+        this.table = new JTable(data,columnNames);
         CellConstraints cc = new CellConstraints();
-        JScrollPane scrollPane = new JScrollPane(table);
-        table.setFillsViewportHeight(true);
-        centerPanel.add(scrollPane, cc.xywh(2,4,9,6, CellConstraints.FILL, CellConstraints.FILL));
+        JScrollPane scrollPane = new JScrollPane(this.table);
+        //this.table.setFillsViewportHeight(true);
+        centerPanel.add(scrollPane, cc.xywh(2,3,9,6, CellConstraints.FILL, CellConstraints.FILL));
+
+        JLabel enterNumberL = new JLabel("Enter the number: ");
+        this.enteredNumber = new JTextField("0");
+        this.enteredNumber.setHorizontalAlignment(JTextField.RIGHT);
+        JLabel rowNumberL = new JLabel("Row number: ");
+        this.rowNumber = new JSpinner();
+        JLabel columnNumberL = new JLabel("Column number: ");
+        this.columnNumber = new JSpinner();
+
+        centerPanel.add(enterNumberL, cc.xyw(2,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
+        centerPanel.add(rowNumberL, cc.xyw(7,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.rowNumber, cc.xy(10,2,CellConstraints.FILL, CellConstraints.CENTER));
+        centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
+
 
         return centerPanel;
     }
@@ -184,15 +198,10 @@ public class App extends JFrame implements ActionListener {
      * creates icons. Handles exception while loading
      */
     private void createIcons() {
-        try {
-        mExitIcon16 = createMyIcon("exit16.png");
-        jtbExitIcon24 = createMyIcon("exit24.png");
-        mSaveIcon16 = createMyIcon("save16.png");
-        jtbSaveIcon24 = createMyIcon("save24.png");
-        }
-        catch(Exception e) {
-            System.out.println("ERROR - Failure while creating icons");
-        }
+            this.mExitIcon16 = createMyIcon("exit16.png");
+            this.jtbExitIcon24 = createMyIcon("exit24.png");
+            this.mSaveIcon16 = createMyIcon("save16.png");
+            this.jtbSaveIcon24 = createMyIcon("save24.png");
     }
 
     /**
@@ -200,10 +209,18 @@ public class App extends JFrame implements ActionListener {
      * @return icon
      */
     private Icon createMyIcon(String file) {
-        String name = "/resources/"+file;
-        Icon icon = new ImageIcon(getClass().getResource(name));
+        Icon icon = null;
+        try {
+            String name = "/resources/" + file;
+            icon = new ImageIcon(getClass().getResource(name));
+            return icon;
+        }
+        catch (Exception e){
+            System.out.println("ERROR while creating icon");
+        }
         return icon;
     }
+
 
     /**
      * Invoked when an action occurs.
@@ -214,6 +231,7 @@ public class App extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit){
             confirmExit();
+
         }
 
     }
