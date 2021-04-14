@@ -123,7 +123,7 @@ public class App extends JFrame implements ActionListener {
             jMI = new JMenuItem(name, icon);
         else jMI = new JMenuItem(name);
         jMI.setAccelerator(key);
-        //jMI.addActionListener(this);
+        jMI.addActionListener(this);
         return jMI;
     }
 
@@ -164,6 +164,11 @@ public class App extends JFrame implements ActionListener {
         centerPanel.setLayout(formLayout);
         String[] columnSpec = {"A", "B", "C", "D"};
         Float[][] data = {
+                {new Float(1),new Float(1),new Float(1),new Float(1)},
+                {new Float(1),new Float(1),new Float(1),new Float(1)},
+                {new Float(1),new Float(1),new Float(1),new Float(1)},
+                {new Float(1),new Float(1),new Float(1),new Float(1)},
+                {new Float(1),new Float(1),new Float(1),new Float(1)},
                 {new Float(1),new Float(1),new Float(1),new Float(1)}
         };
         this.table = new JTable(data,columnSpec);
@@ -207,6 +212,9 @@ public class App extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit){
+            confirmExit();
+        }
 
     }
 
