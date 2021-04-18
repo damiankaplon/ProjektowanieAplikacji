@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Data {
 
-    private final List<String> columnNames = new ArrayList<>();
+    private List<String> columnNames = new ArrayList<>();
     private Float[][] data = new Float[5][5];
 
     public Data(){

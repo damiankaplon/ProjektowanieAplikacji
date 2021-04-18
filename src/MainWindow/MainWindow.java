@@ -1,3 +1,5 @@
+package MainWindow;
+
 import Data.Data;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -7,13 +9,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class App extends JFrame implements ActionListener {
+public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
 
     private Data data = new Data();
-    private JButton toolBarButtonExit, toolBarButtonSave;
+    private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter;
     private JMenuItem exit, saveToFile;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private JTable table;
@@ -21,7 +23,7 @@ public class App extends JFrame implements ActionListener {
     private JSpinner rowNumber, columnNumber;
 
 
-    public App() {
+    public MainWindow() {
         super("Zadanie 1 GUI v.1.0.1");
         setSize(setWindowSize());
         setLocationRelativeTo(null);
@@ -106,14 +108,13 @@ public class App extends JFrame implements ActionListener {
     /**
      * @param name     name of Menu
      * @param keyEvent shortcut key
-     * @return created JMenu
+     * @return JMenu
      */
     private JMenu createJMenu(String name, int keyEvent) {
         JMenu jMenu = new JMenu(name);
         jMenu.setMnemonic(keyEvent);
         return jMenu;
     }
-
 
     /**
      * @param name of the Item
@@ -131,24 +132,25 @@ public class App extends JFrame implements ActionListener {
         return jMI;
     }
 
+    /**
+     * @return JToolBar in finished shape
+     */
     private  JToolBar createToolBar() {
         JToolBar jToolBar = new JToolBar();
         jToolBar.setFloatable(false);
         jToolBar.add(Box.createHorizontalStrut(5));
 
-        this.toolBarButtonExit = createJButtonToolBar("sex", jtbExitIcon24);
-        this.toolBarButtonSave = createJButtonToolBar("xd", jtbSaveIcon24);
-
+        this.toolBarButtonExit = createJButtonToolBar("Exit", jtbExitIcon24);
+        this.toolBarButtonSave = createJButtonToolBar("Save to file", jtbSaveIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
-
 
         return jToolBar;
     }
 
     /**
-     * @param tooltip - Description that appears on mouse over
+     * @param tooltip - Description that appears on mouse over event
      * @param icon - buttons icon
      * @return Button
      */
@@ -159,10 +161,14 @@ public class App extends JFrame implements ActionListener {
         return jb;
     }
 
+    /**
+     * Creates main panel of an app. Contains Labels, JSpinners, JTextFields, JTable.
+     * @return JPanel
+     */
     private JPanel createCenterPanel(){
         JPanel centerPanel = new JPanel();
         FormLayout formLayout = new FormLayout(
-                "5dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,5dlu",
+                "5dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,50dlu,50dlu,50dlu,3dlu,50dlu,5dlu",
                 "5dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,30dlu,5dlu"
         );
         centerPanel.setLayout(formLayout);
@@ -173,7 +179,7 @@ public class App extends JFrame implements ActionListener {
         CellConstraints cc = new CellConstraints();
         JScrollPane scrollPane = new JScrollPane(this.table);
         //this.table.setFillsViewportHeight(true);
-        centerPanel.add(scrollPane, cc.xywh(2,3,9,6, CellConstraints.FILL, CellConstraints.FILL));
+        centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
         JLabel enterNumberL = new JLabel("Enter the number: ");
         this.enteredNumber = new JTextField("0");
@@ -182,6 +188,12 @@ public class App extends JFrame implements ActionListener {
         this.rowNumber = new JSpinner();
         JLabel columnNumberL = new JLabel("Column number: ");
         this.columnNumber = new JSpinner();
+        this.saveCenter = new JButton("Save");
+        this.saveCenter.addActionListener(this);
+        this.zerosCenter = new JButton("Reset");
+        this.zerosCenter.addActionListener(this);
+        this.exitCenter = new JButton("exit");
+        this.exitCenter.addActionListener(this);
 
         centerPanel.add(enterNumberL, cc.xyw(2,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
@@ -189,8 +201,9 @@ public class App extends JFrame implements ActionListener {
         centerPanel.add(this.rowNumber, cc.xy(10,2,CellConstraints.FILL, CellConstraints.CENTER));
         centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
-
-
+        centerPanel.add(this.saveCenter, cc.xyw(15,4,2, CellConstraints.FILL, CellConstraints.FILL));
+        centerPanel.add(this.zerosCenter, cc.xyw(15,6,2,CellConstraints.FILL, CellConstraints.FILL));
+        centerPanel.add(this.exitCenter, cc.xyw(15,8,2,CellConstraints.FILL, CellConstraints.FILL));
         return centerPanel;
     }
 
@@ -213,14 +226,12 @@ public class App extends JFrame implements ActionListener {
         try {
             String name = "/resources/" + file;
             icon = new ImageIcon(getClass().getResource(name));
-            return icon;
         }
         catch (Exception e){
             System.out.println("ERROR while creating icon");
         }
         return icon;
     }
-
 
     /**
      * Invoked when an action occurs.
@@ -231,14 +242,18 @@ public class App extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit){
             confirmExit();
-
+        }
+        if (e.getSource()==this.saveCenter || e.getSource()==this.toolBarButtonSave || e.getSource()==this.saveToFile){
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save to file");
+            int userSelection = fileChooser.showSaveDialog(this);
         }
 
     }
 
 
     public static void main(String[] args) {
-        App app = new App();
-        app.setVisible(true);
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setVisible(true);
     }
 }
