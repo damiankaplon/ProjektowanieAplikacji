@@ -288,7 +288,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()));
             }
             else if (chosenOperation == 1){
-                this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()));
+                this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()));
             }
             else if (chosenOperation == 2){
                 this.data.setZeros();
@@ -305,6 +305,18 @@ public class MainWindow extends JFrame implements ActionListener {
                     System.out.println("Array Index out od Bounds");
                 }
             }
+        }
+
+        if (e.getSource() == this.zeros){
+            this.data.setZeros();
+        }
+
+        if (e.getSource() == this.min){
+            this.resultArea.append("Mainimum value: "+ (this.data.getMinimumValue()));
+        }
+
+        if (e.getSource() == this.max){
+            this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()));
         }
     }
 
