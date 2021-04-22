@@ -18,11 +18,10 @@ public class MainWindow extends JFrame implements ActionListener {
     private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter, execute;
     private JMenuItem exit, saveToFile, zeros, min, max;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
-    private JTable table;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
-    private JComboBox operationList = new JComboBox(OPERATION_LIST);
+    private final JComboBox operationList = new JComboBox(OPERATION_LIST);
     private JTextArea resultArea;
 
     public MainWindow() {
@@ -213,8 +212,8 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel.add(this.exitCenter, cc.xyw(15,8,2,CellConstraints.FILL, CellConstraints.FILL));
 
         this.data = new Data();
-        this.table = new JTable(this.data);
-        JScrollPane scrollPane = new JScrollPane(this.table);
+        JTable table = new JTable(this.data);
+        JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
         JLabel chooseOperation = new JLabel("Choose Operation:");
@@ -283,6 +282,30 @@ public class MainWindow extends JFrame implements ActionListener {
             this.data.setZeros();
         }
 
+        if (e.getSource() == this.execute){
+            int chosenOperation = this.operationList.getSelectedIndex();
+            if (chosenOperation == 0){
+                this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()));
+            }
+            else if (chosenOperation == 1){
+                this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()));
+            }
+            else if (chosenOperation == 2){
+                this.data.setZeros();
+                this.resultArea.append("The table has been reset");
+            }
+            else if (chosenOperation == 3){
+                try {
+                    Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
+                    int chosenRow = (int) this.rowNumber.getValue() - 1;
+                    int chosenCol = (int) this.columnNumber.getValue() - 1;
+                    this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
+                }
+                catch (Exception ArrayIndexOutOfBoundsException) {
+                    System.out.println("Array Index out od Bounds");
+                }
+            }
+        }
     }
 
 

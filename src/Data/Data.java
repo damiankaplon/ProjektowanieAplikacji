@@ -128,6 +128,7 @@ public class Data extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         this.data[rowIndex][columnIndex] = (Float) aValue;
+        fireTableDataChanged();
     }
 
     /**
