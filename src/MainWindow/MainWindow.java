@@ -282,6 +282,7 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource()==this.zerosCenter){
             this.data.setZeros();
         }
+
     }
 
 

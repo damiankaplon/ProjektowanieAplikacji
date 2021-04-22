@@ -44,6 +44,41 @@ public class Data extends AbstractTableModel {
         }
     }
 
+    /**
+     * @return Minimum Value in the table
+     */
+    public Float getMinimumValue(){
+        Float minimum = null;
+        for (int i=0; i<columnRowCount; i++){
+            for (int j=0; j<columnRowCount; j++){
+                if (i == 0 & j == 0) {
+                    minimum = this.data[0][0];
+                }
+                else if (minimum > this.data[i][j]) {
+                    minimum = this.data[i][j];
+                }
+            }
+        }
+        return minimum;
+    }
+
+    /**
+     * @return Maximum Value in the table
+     */
+    public Float getMaximumValue(){
+        Float maximum = null;
+        for (int i=0; i<columnRowCount; i++){
+            for (int j=0; j<columnRowCount; j++){
+                if (i == 0 & j == 0) {
+                    maximum = this.data[0][0];
+                }
+                else if (maximum > this.data[i][j]) {
+                    maximum = this.data[i][j];
+                }
+            }
+        }
+        return maximum;
+    }
 
     /**
      * Returns the number of rows in the model. A
@@ -83,6 +118,16 @@ public class Data extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return this.data[rowIndex][columnIndex];
+    }
+
+    /**
+     *  @param  aValue   value to assign to cell
+     *  @param  rowIndex   row of cell
+     *  @param  columnIndex  column of cell
+     */
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        this.data[rowIndex][columnIndex] = (Float) aValue;
     }
 
     /**
