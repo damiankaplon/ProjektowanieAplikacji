@@ -16,13 +16,12 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private Data data;
     private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter;
-    private JMenuItem exit, saveToFile;
+    private JMenuItem exit, saveToFile, zeros, min, max;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private JTable table;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
     private JTextArea resultArea;
-
 
     public MainWindow() {
         super("Zadanie 1 GUI v.1.0.1");
@@ -45,7 +44,6 @@ public class MainWindow extends JFrame implements ActionListener {
         setJMenuBar(createMenu());
         contentPane.add(createToolBar(), BorderLayout.NORTH);
         contentPane.add(createCenterPanel(),BorderLayout.CENTER);
-
     }
 
     /**
@@ -73,7 +71,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     /**
-     * Invoked when try to close the app.
+     * Invoked when user try to close the app.
      */
     private void confirmExit() {
 
@@ -92,6 +90,7 @@ public class MainWindow extends JFrame implements ActionListener {
         JMenuBar menuBar = new JMenuBar();
         JMenu file = createJMenu("File", KeyEvent.VK_F);
         JMenu help = createJMenu("Help", KeyEvent.VK_H);
+        JMenu calculations = createJMenu("Calculations", KeyEvent.VK_C);
 
         this.exit = createJMenuItem("Exit", this.mExitIcon16, KeyStroke.getKeyStroke(KeyEvent.VK_X,
                 KeyEvent.ALT_MASK));
@@ -100,8 +99,18 @@ public class MainWindow extends JFrame implements ActionListener {
         file.add(exit);
         file.add(saveToFile);
 
+        this.zeros = createJMenuItem("Fill with zeros", null, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
+                KeyEvent.ALT_MASK));
+        this.min = createJMenuItem("Minimum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
+                KeyEvent.ALT_MASK));
+        this.max = createJMenuItem("Maximum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F2,
+                KeyEvent.ALT_MASK));
+        calculations.add(this.max);
+        calculations.add(this.min);
+
         menuBar.add(file);
         menuBar.add(help);
+        menuBar.add(calculations);
 
         return menuBar;
     }
@@ -197,11 +206,11 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
 
-        this.saveCenter = new JButton("Save");
+        this.saveCenter = new JButton("Save", this.jtbSaveIcon24);
         this.saveCenter.addActionListener(this);
         this.zerosCenter = new JButton("Reset");
         this.zerosCenter.addActionListener(this);
-        this.exitCenter = new JButton("exit");
+        this.exitCenter = new JButton("exit", this.jtbExitIcon24);
         this.exitCenter.addActionListener(this);
         centerPanel.add(this.saveCenter, cc.xyw(15,4,2, CellConstraints.FILL, CellConstraints.FILL));
         centerPanel.add(this.zerosCenter, cc.xyw(15,6,2,CellConstraints.FILL, CellConstraints.FILL));
@@ -254,15 +263,16 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit || e.getSource()==this.exitCenter){
             confirmExit();
         }
+
         if (e.getSource()==this.saveCenter || e.getSource()==this.toolBarButtonSave || e.getSource()==this.saveToFile){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save to file");
             int userSelection = fileChooser.showSaveDialog(this);
         }
+
         if (e.getSource()==this.zerosCenter){
             this.data.setZeros();
         }
-
     }
 
 

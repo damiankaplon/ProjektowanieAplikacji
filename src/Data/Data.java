@@ -84,4 +84,18 @@ public class Data extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         return this.data[rowIndex][columnIndex];
     }
+
+    /**
+     * @param stRowIndex - First index of the first cell row of addition
+     * @param stColIndex - First index of the first cell column of addition
+     * @param ndRowIndex - Second index of the first cell row of addition
+     * @param ndColIndex - Second index of the first cell column of addition
+     * @return result of addition two cells from table
+     */
+    public float addition(int stRowIndex, int stColIndex, int ndRowIndex, int ndColIndex){
+        float stValue = this.data[stColIndex][stRowIndex];
+        float ndValue = this.data[ndColIndex][ndRowIndex];
+        return stValue + ndValue;
+    }
+
 }
