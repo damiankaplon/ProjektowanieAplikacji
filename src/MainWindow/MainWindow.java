@@ -14,13 +14,14 @@ public class MainWindow extends JFrame implements ActionListener {
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
 
-    private Data data = new Data();
+    private Data data;
     private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter;
     private JMenuItem exit, saveToFile;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private JTable table;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
+    private JTextArea resultArea;
 
 
     public MainWindow() {
@@ -173,37 +174,47 @@ public class MainWindow extends JFrame implements ActionListener {
         );
         centerPanel.setLayout(formLayout);
 
-        String[] columnNames = this.data.getColumnNames().toArray(new String[4]);
-        Object[][] data = this.data.getData();
-        this.table = new JTable(data,columnNames);
+        this.data = new Data();
+
+        this.table = new JTable(this.data);
         CellConstraints cc = new CellConstraints();
         JScrollPane scrollPane = new JScrollPane(this.table);
-        //this.table.setFillsViewportHeight(true);
         centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
         JLabel enterNumberL = new JLabel("Enter the number: ");
         this.enteredNumber = new JTextField("0");
         this.enteredNumber.setHorizontalAlignment(JTextField.RIGHT);
+        centerPanel.add(enterNumberL, cc.xyw(2,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
+
         JLabel rowNumberL = new JLabel("Row number: ");
         this.rowNumber = new JSpinner();
+        centerPanel.add(rowNumberL, cc.xyw(7,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.rowNumber, cc.xy(10,2,CellConstraints.FILL, CellConstraints.CENTER));
+
         JLabel columnNumberL = new JLabel("Column number: ");
         this.columnNumber = new JSpinner();
+        centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
+
         this.saveCenter = new JButton("Save");
         this.saveCenter.addActionListener(this);
         this.zerosCenter = new JButton("Reset");
         this.zerosCenter.addActionListener(this);
         this.exitCenter = new JButton("exit");
         this.exitCenter.addActionListener(this);
-
-        centerPanel.add(enterNumberL, cc.xyw(2,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
-        centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
-        centerPanel.add(rowNumberL, cc.xyw(7,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
-        centerPanel.add(this.rowNumber, cc.xy(10,2,CellConstraints.FILL, CellConstraints.CENTER));
-        centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
-        centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
         centerPanel.add(this.saveCenter, cc.xyw(15,4,2, CellConstraints.FILL, CellConstraints.FILL));
         centerPanel.add(this.zerosCenter, cc.xyw(15,6,2,CellConstraints.FILL, CellConstraints.FILL));
         centerPanel.add(this.exitCenter, cc.xyw(15,8,2,CellConstraints.FILL, CellConstraints.FILL));
+
+        this.resultArea = new JTextArea();
+        this.resultArea.setEditable(false);
+        JScrollPane scrollForResultsArea = new JScrollPane(this.resultArea);
+        scrollForResultsArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
+                "Results"));
+        centerPanel.add(scrollForResultsArea, cc.xywh(2,12,13, 3, CellConstraints.FILL,
+                CellConstraints.FILL));
+
         return centerPanel;
     }
 
@@ -240,13 +251,16 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit){
+        if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit || e.getSource()==this.exitCenter){
             confirmExit();
         }
         if (e.getSource()==this.saveCenter || e.getSource()==this.toolBarButtonSave || e.getSource()==this.saveToFile){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save to file");
             int userSelection = fileChooser.showSaveDialog(this);
+        }
+        if (e.getSource()==this.zerosCenter){
+            this.data.setZeros();
         }
 
     }
