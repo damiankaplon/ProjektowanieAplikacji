@@ -100,7 +100,7 @@ public class MainWindow extends JFrame implements ActionListener {
         file.add(exit);
         file.add(saveToFile);
 
-        this.zeros = createJMenuItem("Fill with zeros", null, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
+        this.zeros = createJMenuItem("Fill with zeros", null, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 KeyEvent.ALT_MASK));
         this.min = createJMenuItem("Minimum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
                 KeyEvent.ALT_MASK));
@@ -108,6 +108,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 KeyEvent.ALT_MASK));
         calculations.add(this.max);
         calculations.add(this.min);
+        calculations.add(this.zeros);
 
         menuBar.add(file);
         menuBar.add(help);
@@ -285,14 +286,14 @@ public class MainWindow extends JFrame implements ActionListener {
         if (e.getSource() == this.execute){
             int chosenOperation = this.operationList.getSelectedIndex();
             if (chosenOperation == 0){
-                this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()));
+                this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()) + '\n');
             }
             else if (chosenOperation == 1){
-                this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()));
+                this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()) + '\n');
             }
             else if (chosenOperation == 2){
                 this.data.setZeros();
-                this.resultArea.append("The table has been reset");
+                this.resultArea.append("The table has been reset" + '\n');
             }
             else if (chosenOperation == 3){
                 try {
@@ -307,16 +308,17 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == this.zeros){
+        if (e.getSource() == this.zeros || e.getSource() == this.zerosCenter){
             this.data.setZeros();
+            this.resultArea.append("The table has been reset" + '\n');
         }
 
         if (e.getSource() == this.min){
-            this.resultArea.append("Mainimum value: "+ (this.data.getMinimumValue()));
+            this.resultArea.append("Mainimum value: "+ (this.data.getMinimumValue()) + '\n');
         }
 
         if (e.getSource() == this.max){
-            this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()));
+            this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()) + '\n');
         }
     }
 
