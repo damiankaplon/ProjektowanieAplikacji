@@ -13,14 +13,16 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
+    private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set"};
 
-    private Data data;
-    private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter;
+    private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter, execute;
     private JMenuItem exit, saveToFile, zeros, min, max;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private JTable table;
+    private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
+    private JComboBox operationList = new JComboBox(OPERATION_LIST);
     private JTextArea resultArea;
 
     public MainWindow() {
@@ -179,16 +181,10 @@ public class MainWindow extends JFrame implements ActionListener {
         JPanel centerPanel = new JPanel();
         FormLayout formLayout = new FormLayout(
                 "5dlu,50dlu,50dlu,3dlu,50dlu,3dlu,50dlu,50dlu,3dlu,50dlu,50dlu,50dlu,50dlu,3dlu,50dlu,5dlu",
-                "5dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,30dlu,5dlu"
+                "5dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,3dlu,30dlu,30dlu,30dlu,5dlu"
         );
         centerPanel.setLayout(formLayout);
-
-        this.data = new Data();
-
-        this.table = new JTable(this.data);
         CellConstraints cc = new CellConstraints();
-        JScrollPane scrollPane = new JScrollPane(this.table);
-        centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
         JLabel enterNumberL = new JLabel("Enter the number: ");
         this.enteredNumber = new JTextField("0");
@@ -215,6 +211,19 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel.add(this.saveCenter, cc.xyw(15,4,2, CellConstraints.FILL, CellConstraints.FILL));
         centerPanel.add(this.zerosCenter, cc.xyw(15,6,2,CellConstraints.FILL, CellConstraints.FILL));
         centerPanel.add(this.exitCenter, cc.xyw(15,8,2,CellConstraints.FILL, CellConstraints.FILL));
+
+        this.data = new Data();
+        this.table = new JTable(this.data);
+        JScrollPane scrollPane = new JScrollPane(this.table);
+        centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
+
+        JLabel chooseOperation = new JLabel("Choose Operation:");
+        centerPanel.add(chooseOperation, cc.xyw(2, 10, 4, CellConstraints.RIGHT, CellConstraints.FILL));
+        centerPanel.add(this.operationList, cc.xyw(7, 10, 3, CellConstraints.FILL, CellConstraints.CENTER));
+        this.execute = new JButton("Execute");
+        this.execute.addActionListener(this);
+        centerPanel.add(this.execute, cc.xyw(11, 10, 2, CellConstraints.FILL, CellConstraints.CENTER));
+
 
         this.resultArea = new JTextArea();
         this.resultArea.setEditable(false);
