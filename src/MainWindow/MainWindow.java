@@ -14,13 +14,14 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
-    private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table"};
+    private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table", "AVG",
+            "SUM"};
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
-            toolBarZeros, toolBarSet, toolBarAbout, execute;
-    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about, set;
+            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute;
+    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
-            jtbSetIcon24, jtbAboutIcon24;
+            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
@@ -118,11 +119,17 @@ public class MainWindow extends JFrame implements ActionListener {
                 KeyEvent.VK_F6, KeyEvent.ALT_MASK));
         this.set = createJMenuItem("Set value", null, KeyStroke.getKeyStroke(
                 KeyEvent.VK_F7, KeyEvent.ALT_MASK));
+        this.sum = createJMenuItem("Summary values", null, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F8, KeyEvent.ALT_MASK));
+        this.avg = createJMenuItem("Average value", null, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F9, KeyEvent.ALT_MASK));
         calculations.add(this.max);
         calculations.add(this.min);
         calculations.add(this.zeros);
         calculations.add(this.setRandom);
         calculations.add(this.set);
+        calculations.add(this.sum);
+        calculations.add(this.avg);
 
         menuBar.add(file);
         menuBar.add(calculations);
@@ -174,6 +181,8 @@ public class MainWindow extends JFrame implements ActionListener {
         this.toolBarZeros = createJButtonToolBar("Zeros the table", this.jtbZerosIcon24);
         this.toolBarSet = createJButtonToolBar("Set value", this.jtbSetIcon24);
         this.toolBarAbout = createJButtonToolBar("Show about", this.jtbAboutIcon24);
+        this.toolBarSum = createJButtonToolBar("Sum values", this.jtbSumIcon24);
+        this.toolBarAvg = createJButtonToolBar("Avg value", this.jtbAvgIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
@@ -182,6 +191,8 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.add(this.toolBarMin);
         jToolBar.add(this.toolBarZeros);
         jToolBar.add(this.toolBarSet);
+        jToolBar.add(this.toolBarSum);
+        jToolBar.add(this.toolBarAvg);
         jToolBar.addSeparator();
         jToolBar.add(this.toolBarAbout);
 
@@ -278,6 +289,8 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbSetIcon24 = createMyIcon("set24.png");
             this.jtbZerosIcon24 = createMyIcon("zeros24.png");
             this.jtbAboutIcon24 = createMyIcon("about.png");
+            this.jtbSumIcon24 = createMyIcon("sum24.png");
+            this.jtbAvgIcon24 = createMyIcon("avg24.png");
     }
 
     /**
@@ -359,6 +372,12 @@ public class MainWindow extends JFrame implements ActionListener {
                             "Alert!", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            else if (chosenOperation == 5){
+                this.resultArea.append("Avg value: "+ (this.data.getAvg()) + '\n');
+            }
+            else if (chosenOperation == 6){
+                this.resultArea.append("Sum of values: "+ (this.data.getSum()) + '\n');
+            }
         }
         if (e.getSource()==this.toolBarSet || e.getSource()==this.set){
             try {
@@ -390,6 +409,14 @@ public class MainWindow extends JFrame implements ActionListener {
         if(e.getSource() == this.about || e.getSource() == this.toolBarAbout){
             AboutWindow aboutWindow = new AboutWindow();
             aboutWindow.setVisible(true);
+        }
+
+        if(e.getSource() == this.toolBarSum || e.getSource()==this.sum){
+            this.resultArea.append("Sum of values: "+ (this.data.getSum()) + '\n');
+        }
+
+        if(e.getSource()==this.avg || e.getSource() == this.toolBarAvg){
+            this.resultArea.append("Avg value: "+ (this.data.getAvg()) + '\n');
         }
     }
 

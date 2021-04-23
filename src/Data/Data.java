@@ -70,10 +70,10 @@ public class Data extends AbstractTableModel {
      * @return <code>sum </code> of all values in the table
      */
     public Float getSum(){
-            Float sum = null;
+        Float sum = (float) 0;
             for (int i=0; i<columnRowCount; i++){
                 for (int j=0; j<columnRowCount; j++){
-                  sum += this.data[i][j];
+                    sum += this.data[i][j];
                 }
             }
             return sum;
@@ -83,14 +83,14 @@ public class Data extends AbstractTableModel {
      * @return <code>avg</code> - average value from table
      */
     public Float getAvg(){
-        Float sum = null;
-        Float avg = null;
+        Float sum = (float) 0;
+        Float avg;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
                 sum += this.data[i][j];
             }
         }
-        avg = sum/this.columnRowCount*this.columnRowCount;
+        avg = sum/(this.columnRowCount*this.columnRowCount);
         return avg;
     }
 
