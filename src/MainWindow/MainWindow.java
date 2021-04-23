@@ -160,13 +160,12 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.add(Box.createHorizontalStrut(5));
 
         //JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-
         this.toolBarButtonExit = createJButtonToolBar("Exit", this.jtbExitIcon24);
         this.toolBarButtonSave = createJButtonToolBar("Save to file", this.jtbSaveIcon24);
         this.toolBarMax = createJButtonToolBar("Show max value", this.jtbMaxIcon24);
         this.toolBarMin = createJButtonToolBar("Show min value", this.jtbMinIcon24);
         this.toolBarZeros = createJButtonToolBar("Zeros the table", this.jtbZerosIcon24);
-        this.toolBarSet = createJButtonToolBar("Set vaule", this.jtbSetIcon24);
+        this.toolBarSet = createJButtonToolBar("Set value", this.jtbSetIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
@@ -339,17 +338,30 @@ public class MainWindow extends JFrame implements ActionListener {
                 }
             }
         }
+        if (e.getSource()==this.toolBarSet){
+            try {
+                Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
+                int chosenRow = (int) this.rowNumber.getValue() - 1;
+                int chosenCol = (int) this.columnNumber.getValue() - 1;
+                this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
+            }
+            catch (Exception ArrayIndexOutOfBoundsException) {
+                this.resultArea.append("Array Index out of Bounds!" + '\n');
+                JOptionPane.showMessageDialog(this, "Array Index out of Bounds!",
+                        "Alert!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
-        if (e.getSource() == this.zeros || e.getSource() == this.zerosCenter){
+        if (e.getSource() == this.zeros || e.getSource() == this.zerosCenter || e.getSource() == this.toolBarZeros){
             this.data.setZeros();
             this.resultArea.append("Table has been reset" + '\n');
         }
 
-        if (e.getSource() == this.min){
+        if (e.getSource() == this.min || e.getSource() == this.toolBarMin){
             this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()) + '\n');
         }
 
-        if (e.getSource() == this.max){
+        if (e.getSource() == this.max || e.getSource() == this.toolBarMax){
             this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()) + '\n');
         }
     }
