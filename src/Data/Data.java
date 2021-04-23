@@ -6,9 +6,10 @@ import javax.swing.table.AbstractTableModel;
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;
     private final String[] columnNames = new String[]{"A", "B", "C", "D", "E"};
-    private Float[][] data = new Float[columnRowCount][columnRowCount];
+    private Float[][] data;
 
     public Data(){
+        this.data = new Float[columnRowCount][columnRowCount];
         setZeros();
         this.fireTableDataChanged();
     }
@@ -66,13 +67,10 @@ public class Data extends AbstractTableModel {
      * @return Maximum Value in the table
      */
     public Float getMaximumValue(){
-        Float maximum = null;
+        Float maximum = (float) 0;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
-                if (i == 0 & j == 0) {
-                    maximum = this.data[0][0];
-                }
-                else if (maximum > this.data[i][j]) {
+                if (maximum < this.data[i][j]) {
                     maximum = this.data[i][j];
                 }
             }
