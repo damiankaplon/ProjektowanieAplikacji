@@ -16,14 +16,14 @@ public class MainWindow extends JFrame implements ActionListener {
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table"};
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
-            toolBarZeros, toolBarSet, execute;
-    private JMenuItem exit, saveToFile, zeros, min, max, setRandom;
+            toolBarZeros, toolBarSet, toolBarAbout, execute;
+    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
-            jtbSetIcon24;
+            jtbSetIcon24, jtbAboutIcon24;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
-    private final JComboBox operationList = new JComboBox(OPERATION_LIST);;
+    private final JComboBox operationList = new JComboBox(OPERATION_LIST);
     private JTextArea resultArea;
     private StatusBar statusBar = new StatusBar();
 
@@ -104,6 +104,9 @@ public class MainWindow extends JFrame implements ActionListener {
         file.add(exit);
         file.add(saveToFile);
 
+        this.about = createJMenuItem("About",null, null);
+        help.add(this.about);
+
         this.zeros = createJMenuItem("Fill with zeros", null, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 KeyEvent.ALT_MASK));
         this.min = createJMenuItem("Minimum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F1,
@@ -166,6 +169,7 @@ public class MainWindow extends JFrame implements ActionListener {
         this.toolBarMin = createJButtonToolBar("Show min value", this.jtbMinIcon24);
         this.toolBarZeros = createJButtonToolBar("Zeros the table", this.jtbZerosIcon24);
         this.toolBarSet = createJButtonToolBar("Set value", this.jtbSetIcon24);
+        this.toolBarAbout = createJButtonToolBar("Show about", this.jtbAboutIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
@@ -175,6 +179,7 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.add(this.toolBarZeros);
         jToolBar.add(this.toolBarSet);
         jToolBar.addSeparator();
+        jToolBar.add(this.toolBarAbout);
 
         return jToolBar;
     }
@@ -224,7 +229,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         this.saveCenter = new JButton("Save", this.jtbSaveIcon24);
         this.saveCenter.addActionListener(this);
-        this.zerosCenter = new JButton("Reset");
+        this.zerosCenter = new JButton("Reset", this.jtbZerosIcon24);
         this.zerosCenter.addActionListener(this);
         this.exitCenter = new JButton("exit", this.jtbExitIcon24);
         this.exitCenter.addActionListener(this);
@@ -268,6 +273,7 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbMinIcon24 = createMyIcon("min24.png");
             this.jtbSetIcon24 = createMyIcon("set24.png");
             this.jtbZerosIcon24 = createMyIcon("zeros24.png");
+            this.jtbAboutIcon24 = createMyIcon("about.png");
     }
 
     /**
@@ -363,6 +369,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if (e.getSource() == this.max || e.getSource() == this.toolBarMax){
             this.resultArea.append("Maximum value: "+ (this.data.getMaximumValue()) + '\n');
+        }
+
+        if(e.getSource() == this.about || e.getSource() == this.toolBarAbout){
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.setVisible(true);
         }
     }
 
