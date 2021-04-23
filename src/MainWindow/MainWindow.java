@@ -23,6 +23,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JSpinner rowNumber, columnNumber;
     private final JComboBox operationList = new JComboBox(OPERATION_LIST);
     private JTextArea resultArea;
+    private StatusBar statusBar = new StatusBar();
 
     public MainWindow() {
         super("Zadanie 1 GUI v.1.0.1");
@@ -44,7 +45,8 @@ public class MainWindow extends JFrame implements ActionListener {
         contentPane.setLayout(new BorderLayout());
         setJMenuBar(createMenu());
         contentPane.add(createToolBar(), BorderLayout.NORTH);
-        contentPane.add(createCenterPanel(),BorderLayout.CENTER);
+        contentPane.add(createCenterPanel(), BorderLayout.CENTER);
+        contentPane.add(this.statusBar, BorderLayout.SOUTH);
     }
 
     /**
@@ -303,7 +305,9 @@ public class MainWindow extends JFrame implements ActionListener {
                     this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
                 }
                 catch (Exception ArrayIndexOutOfBoundsException) {
-                    System.out.println("Array Index out od Bounds");
+                    this.resultArea.append("Array Index out of Bounds!" + '\n');
+                    JOptionPane.showMessageDialog(this, "Array Index out of Bounds!",
+                            "Alert!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -314,7 +318,7 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == this.min){
-            this.resultArea.append("Mainimum value: "+ (this.data.getMinimumValue()) + '\n');
+            this.resultArea.append("Minimum value: "+ (this.data.getMinimumValue()) + '\n');
         }
 
         if (e.getSource() == this.max){
