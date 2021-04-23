@@ -5,9 +5,12 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+
+import static javax.swing.SwingConstants.RIGHT;
 
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -37,7 +40,7 @@ public class MainWindow extends JFrame implements ActionListener {
         addWindowListener(new WindowAdapter() {
             /**
              * Invoked when a window is in the process of being closed
-             * @param e
+             * @param e - Window Event object
              */
             @Override
             public void windowClosing(WindowEvent e) {
@@ -226,7 +229,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         JLabel enterNumberL = new JLabel("Enter the number: ");
         this.enteredNumber = new JTextField("0");
-        this.enteredNumber.setHorizontalAlignment(JTextField.RIGHT);
+        this.enteredNumber.setHorizontalAlignment(RIGHT);
         centerPanel.add(enterNumberL, cc.xyw(2,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
 
@@ -254,6 +257,9 @@ public class MainWindow extends JFrame implements ActionListener {
 
         this.data = new Data();
         JTable table = new JTable(this.data);
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
+        table.setDefaultRenderer(Float.class, rightRenderer);
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
@@ -312,7 +318,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /**
      * Invoked when an action occurs.
      *
-     * @param e
+     * @param e - Action Event object
      */
     @Override
     public void actionPerformed(ActionEvent e) {

@@ -1,8 +1,7 @@
 package Data;
 
-import javax.swing.*;
+
 import javax.swing.table.AbstractTableModel;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Data extends AbstractTableModel {
@@ -174,9 +173,12 @@ public class Data extends AbstractTableModel {
         return stValue + ndValue;
     }
 
-
+    /**
+     * @param out - output stream
+     */
     public void saveData(PrintWriter out) {
         for (int i=0; i<5; i++){
+            out.print('\n');
             for (int j=0;j<5;j++)
                 out.print(this.data[i][j] + " ");
         }
