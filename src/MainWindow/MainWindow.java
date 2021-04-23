@@ -195,12 +195,14 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel.add(this.enteredNumber, cc.xy(5,2,CellConstraints.FILL, CellConstraints.CENTER));
 
         JLabel rowNumberL = new JLabel("Row number: ");
-        this.rowNumber = new JSpinner();
+        SpinnerNumberModel spinnerNumberModel1 = new SpinnerNumberModel(1, 1, 5, 1);
+        this.rowNumber = new JSpinner(spinnerNumberModel1);
         centerPanel.add(rowNumberL, cc.xyw(7,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.rowNumber, cc.xy(10,2,CellConstraints.FILL, CellConstraints.CENTER));
 
         JLabel columnNumberL = new JLabel("Column number: ");
-        this.columnNumber = new JSpinner();
+        SpinnerNumberModel spinnerNumberModel2 = new SpinnerNumberModel(1, 1, 5, 1);
+        this.columnNumber = new JSpinner(spinnerNumberModel2);
         centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
         centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
 
