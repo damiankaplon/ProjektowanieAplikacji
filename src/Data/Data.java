@@ -43,6 +43,7 @@ public class Data extends AbstractTableModel {
                 this.data[i][j]= (float) Math.random() * 10;
             }
         }
+        fireTableDataChanged();
     }
 
     /**

@@ -13,15 +13,15 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
-    private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set"};
+    private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table"};
 
     private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter, execute;
-    private JMenuItem exit, saveToFile, zeros, min, max;
+    private JMenuItem exit, saveToFile, zeros, min, max, setRandom;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
-    private final JComboBox operationList = new JComboBox(OPERATION_LIST);
+    private final JComboBox operationList = new JComboBox(OPERATION_LIST);;
     private JTextArea resultArea;
     private StatusBar statusBar = new StatusBar();
 
@@ -108,14 +108,17 @@ public class MainWindow extends JFrame implements ActionListener {
                 KeyEvent.ALT_MASK));
         this.max = createJMenuItem("Maximum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F2,
                 KeyEvent.ALT_MASK));
+        this.setRandom = createJMenuItem("Set random numbers in table", null, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F4, KeyEvent.ALT_MASK));
         calculations.add(this.max);
         calculations.add(this.min);
         calculations.add(this.zeros);
+        calculations.add(this.setRandom);
 
         menuBar.add(file);
-        menuBar.add(help);
         menuBar.add(calculations);
-
+        menuBar.add(help);
+        
         return menuBar;
     }
 
@@ -283,8 +286,9 @@ public class MainWindow extends JFrame implements ActionListener {
             int userSelection = fileChooser.showSaveDialog(this);
         }
 
-        if (e.getSource()==this.zerosCenter){
-            this.data.setZeros();
+        if (e.getSource()==this.setRandom){
+            this.data.setRandom();
+            this.resultArea.append("Table has been randomized" + '\n');
         }
 
         if (e.getSource() == this.execute){
@@ -297,7 +301,11 @@ public class MainWindow extends JFrame implements ActionListener {
             }
             else if (chosenOperation == 2){
                 this.data.setZeros();
-                this.resultArea.append("The table has been reset" + '\n');
+                this.resultArea.append("Table has been reset" + '\n');
+            }
+            else if (chosenOperation == 4){
+                this.data.setRandom();
+                this.resultArea.append("Table has been randomized" + '\n');
             }
             else if (chosenOperation == 3){
                 try {
@@ -316,7 +324,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if (e.getSource() == this.zeros || e.getSource() == this.zerosCenter){
             this.data.setZeros();
-            this.resultArea.append("The table has been reset" + '\n');
+            this.resultArea.append("Table has been reset" + '\n');
         }
 
         if (e.getSource() == this.min){
