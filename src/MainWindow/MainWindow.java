@@ -15,9 +15,11 @@ public class MainWindow extends JFrame implements ActionListener {
     private static final int HEIGHT_FRAME = 600;
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table"};
 
-    private JButton toolBarButtonExit, toolBarButtonSave, zerosCenter, saveCenter, exitCenter, execute;
+    private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
+            toolBarZeros, toolBarSet, execute;
     private JMenuItem exit, saveToFile, zeros, min, max, setRandom;
-    private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24;
+    private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
+            jtbSetIcon24;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
@@ -118,7 +120,7 @@ public class MainWindow extends JFrame implements ActionListener {
         menuBar.add(file);
         menuBar.add(calculations);
         menuBar.add(help);
-        
+
         return menuBar;
     }
 
@@ -157,11 +159,23 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.setFloatable(false);
         jToolBar.add(Box.createHorizontalStrut(5));
 
-        this.toolBarButtonExit = createJButtonToolBar("Exit", jtbExitIcon24);
-        this.toolBarButtonSave = createJButtonToolBar("Save to file", jtbSaveIcon24);
+        //JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+
+        this.toolBarButtonExit = createJButtonToolBar("Exit", this.jtbExitIcon24);
+        this.toolBarButtonSave = createJButtonToolBar("Save to file", this.jtbSaveIcon24);
+        this.toolBarMax = createJButtonToolBar("Show max value", this.jtbMaxIcon24);
+        this.toolBarMin = createJButtonToolBar("Show min value", this.jtbMinIcon24);
+        this.toolBarZeros = createJButtonToolBar("Zeros the table", this.jtbZerosIcon24);
+        this.toolBarSet = createJButtonToolBar("Set vaule", this.jtbSetIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
+        jToolBar.addSeparator();
+        jToolBar.add(this.toolBarMax);
+        jToolBar.add(this.toolBarMin);
+        jToolBar.add(this.toolBarZeros);
+        jToolBar.add(this.toolBarSet);
+        jToolBar.addSeparator();
 
         return jToolBar;
     }
@@ -251,6 +265,10 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbExitIcon24 = createMyIcon("exit24.png");
             this.mSaveIcon16 = createMyIcon("save16.png");
             this.jtbSaveIcon24 = createMyIcon("save24.png");
+            this.jtbMaxIcon24 = createMyIcon("max24.png");
+            this.jtbMinIcon24 = createMyIcon("min24.png");
+            this.jtbSetIcon24 = createMyIcon("set24.png");
+            this.jtbZerosIcon24 = createMyIcon("zeros24.png");
     }
 
     /**

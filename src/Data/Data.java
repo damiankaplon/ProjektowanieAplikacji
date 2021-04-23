@@ -1,6 +1,7 @@
 package Data;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.DecimalFormat;
 
 
 public class Data extends AbstractTableModel {
