@@ -67,6 +67,34 @@ public class Data extends AbstractTableModel {
     }
 
     /**
+     * @return <code>sum </code> of all values in the table
+     */
+    public Float getSum(){
+            Float sum = null;
+            for (int i=0; i<columnRowCount; i++){
+                for (int j=0; j<columnRowCount; j++){
+                  sum += this.data[i][j];
+                }
+            }
+            return sum;
+    }
+
+    /**
+     * @return <code>avg</code> - average value from table
+     */
+    public Float getAvg(){
+        Float sum = null;
+        Float avg = null;
+        for (int i=0; i<columnRowCount; i++){
+            for (int j=0; j<columnRowCount; j++){
+                sum += this.data[i][j];
+            }
+        }
+        avg = sum/this.columnRowCount*this.columnRowCount;
+        return avg;
+    }
+
+    /**
      * @return Maximum Value in the table
      */
     public Float getMaximumValue(){
@@ -145,6 +173,7 @@ public class Data extends AbstractTableModel {
         float ndValue = this.data[ndColIndex][ndRowIndex];
         return stValue + ndValue;
     }
+
 
     public void saveData(PrintWriter out) {
         for (int i=0; i<5; i++){
