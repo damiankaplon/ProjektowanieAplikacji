@@ -1,8 +1,9 @@
 package Data;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import java.text.DecimalFormat;
-
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;
@@ -127,8 +128,9 @@ public class Data extends AbstractTableModel {
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        this.data[rowIndex][columnIndex] = (Float) aValue;
-        fireTableDataChanged();
+            Float Value = (Float) aValue;
+            this.data[rowIndex][columnIndex] =Value;
+            fireTableDataChanged();
     }
 
     /**
@@ -142,6 +144,13 @@ public class Data extends AbstractTableModel {
         float stValue = this.data[stColIndex][stRowIndex];
         float ndValue = this.data[ndColIndex][ndRowIndex];
         return stValue + ndValue;
+    }
+
+    public void saveData(PrintWriter out) {
+        for (int i=0; i<5; i++){
+            for (int j=0;j<5;j++)
+                out.print(this.data[i][j] + " ");
+        }
     }
 
 }

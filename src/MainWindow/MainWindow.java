@@ -7,6 +7,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -17,7 +18,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
             toolBarZeros, toolBarSet, toolBarAbout, execute;
-    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about;
+    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about, set;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
             jtbSetIcon24, jtbAboutIcon24;
     private Data data;
@@ -114,11 +115,14 @@ public class MainWindow extends JFrame implements ActionListener {
         this.max = createJMenuItem("Maximum Value", null, KeyStroke.getKeyStroke(KeyEvent.VK_F2,
                 KeyEvent.ALT_MASK));
         this.setRandom = createJMenuItem("Set random numbers in table", null, KeyStroke.getKeyStroke(
-                KeyEvent.VK_F4, KeyEvent.ALT_MASK));
+                KeyEvent.VK_F6, KeyEvent.ALT_MASK));
+        this.set = createJMenuItem("Set value", null, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F7, KeyEvent.ALT_MASK));
         calculations.add(this.max);
         calculations.add(this.min);
         calculations.add(this.zeros);
         calculations.add(this.setRandom);
+        calculations.add(this.set);
 
         menuBar.add(file);
         menuBar.add(calculations);
@@ -307,6 +311,18 @@ public class MainWindow extends JFrame implements ActionListener {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save to file");
             int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String fileToSave = fileChooser.getSelectedFile().toString();
+                try (PrintWriter out = new PrintWriter(fileToSave, "UTF-8"))
+                {
+                        this.data.saveData(out);
+                }
+                 catch (Exception e1) {
+                     this.resultArea.append("Error while saving" + '\n');
+                     JOptionPane.showMessageDialog(this, "Error while saving",
+                             "Alert!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
 
         if (e.getSource()==this.setRandom){
@@ -337,23 +353,23 @@ public class MainWindow extends JFrame implements ActionListener {
                     int chosenCol = (int) this.columnNumber.getValue() - 1;
                     this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
                 }
-                catch (Exception ArrayIndexOutOfBoundsException) {
-                    this.resultArea.append("Array Index out of Bounds!" + '\n');
-                    JOptionPane.showMessageDialog(this, "Array Index out of Bounds!",
+                catch (Exception e1) {
+                    this.resultArea.append("Not a valid value" + '\n');
+                    JOptionPane.showMessageDialog(this, "Not a valid value",
                             "Alert!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
-        if (e.getSource()==this.toolBarSet){
+        if (e.getSource()==this.toolBarSet || e.getSource()==this.set){
             try {
                 Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
                 int chosenRow = (int) this.rowNumber.getValue() - 1;
                 int chosenCol = (int) this.columnNumber.getValue() - 1;
                 this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
             }
-            catch (Exception ArrayIndexOutOfBoundsException) {
-                this.resultArea.append("Array Index out of Bounds!" + '\n');
-                JOptionPane.showMessageDialog(this, "Array Index out of Bounds!",
+            catch (Exception e1) {
+                this.resultArea.append("Not a valid value" + '\n');
+                JOptionPane.showMessageDialog(this, "Not a valid value",
                         "Alert!", JOptionPane.ERROR_MESSAGE);
             }
         }
