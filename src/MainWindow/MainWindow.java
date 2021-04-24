@@ -25,7 +25,7 @@ public class MainWindow extends JFrame implements ActionListener {
             toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute;
     private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
-            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16;;
+            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
