@@ -3,6 +3,7 @@ package Data;
 
 import javax.swing.table.AbstractTableModel;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;
@@ -178,10 +179,24 @@ public class Data extends AbstractTableModel {
      */
     public void saveData(PrintWriter out) {
         for (int i=0; i<5; i++){
-            out.print('\n');
+            //if (i>0)out.print('\n');
             for (int j=0;j<5;j++)
-                out.print(this.data[i][j] + " ");
+                out.print(this.data[i][j] + "\n");
         }
+    }
+
+    /**
+     * Reads data from input stream and save it to <code>this.data</code>
+     * @param in - (Scanner) FileInputStream
+     */
+    public void readData(Scanner in) {
+        for (int i = 0; i<5; i++) {
+            for (int j = 0; j < 5; j++) {
+                String line = in.nextLine();
+                this.data[i][j] = Float.parseFloat(line);
+            }
+        }
+        fireTableDataChanged();
     }
 
 }

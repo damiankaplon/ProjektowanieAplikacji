@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Scanner;
 
 import static javax.swing.SwingConstants.RIGHT;
 
@@ -22,9 +23,9 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
             toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute;
-    private JMenuItem exit, saveToFile, zeros, min, max, setRandom, about, set, sum, avg;
+    private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
-            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24;
+            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16;;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
@@ -104,10 +105,13 @@ public class MainWindow extends JFrame implements ActionListener {
 
         this.exit = createJMenuItem("Exit", this.mExitIcon16, KeyStroke.getKeyStroke(KeyEvent.VK_X,
                 KeyEvent.ALT_MASK));
-        this.saveToFile = createJMenuItem("Save to file", mSaveIcon16, KeyStroke.getKeyStroke(KeyEvent.VK_S,
+        this.saveToFile = createJMenuItem("Save to file", this.mSaveIcon16, KeyStroke.getKeyStroke(KeyEvent.VK_S,
                 KeyEvent.ALT_MASK));
-        file.add(exit);
-        file.add(saveToFile);
+        this.open = createJMenuItem("Open from file", this.mOpenIcon16,KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                KeyEvent.ALT_MASK));
+        file.add(this.exit);
+        file.add(this.open);
+        file.add(this.saveToFile);
 
         this.about = createJMenuItem("About",null, null);
         help.add(this.about);
@@ -205,7 +209,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /**
      * @param tooltip - Description that appears on mouse over event
      * @param icon - buttons icon
-     * @return Button
+     * @return JButton with setted tooltip text, icon and added actionListner
      */
     private  JButton createJButtonToolBar(String tooltip, Icon icon) {
         JButton jb = new JButton("", icon);
@@ -297,6 +301,7 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbAboutIcon24 = createMyIcon("about.png");
             this.jtbSumIcon24 = createMyIcon("sum24.png");
             this.jtbAvgIcon24 = createMyIcon("avg24.png");
+            this.mOpenIcon16 = createMyIcon("open16.png");
     }
 
     /**
@@ -332,14 +337,39 @@ public class MainWindow extends JFrame implements ActionListener {
             int userSelection = fileChooser.showSaveDialog(this);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 String fileToSave = fileChooser.getSelectedFile().toString();
-                try (PrintWriter out = new PrintWriter(fileToSave, "UTF-8"))
-                {
-                        this.data.saveData(out);
+                try (PrintWriter out = new PrintWriter(fileToSave)){
+                    System.out.println(fileToSave);
+                    this.data.saveData(out);
                 }
                  catch (Exception e1) {
                      this.resultArea.append("Error while saving" + '\n');
                      JOptionPane.showMessageDialog(this, "Error while saving",
                              "Alert!", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
+        if (e.getSource()==this.open){
+            JFileChooser fileChooser2 = new JFileChooser();
+            fileChooser2.setDialogTitle("Open File");
+            int userSelection = fileChooser2.showOpenDialog(this);
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String fileToOpen = fileChooser2.getSelectedFile().toString();
+                try {
+                    System.out.println(fileToOpen);
+                    Scanner in = new Scanner(new FileInputStream(fileToOpen));
+                    this.data.readData(in);
+
+                }
+                catch (FileNotFoundException e1) {
+                   this.resultArea.append("File Not Found" + '\n');
+                   JOptionPane.showMessageDialog(this, "File Not Found",
+                           "Alert!", JOptionPane.ERROR_MESSAGE);
+                }
+                catch (Exception e2){
+                    this.resultArea.append("Error while opening the file" + '\n');
+                    JOptionPane.showMessageDialog(this, "Error while opening the file",
+                            "Alert!", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
