@@ -22,10 +22,10 @@ public class MainWindow extends JFrame implements ActionListener {
             "SUM"};
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
-            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute;
-    private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, set, sum, avg;
+            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute, toolBarHelp;
+    private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, help, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
-            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16;
+            jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16, jtbHelpIcon24;
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
@@ -114,7 +114,10 @@ public class MainWindow extends JFrame implements ActionListener {
         file.add(this.saveToFile);
 
         this.about = createJMenuItem("About",null, null);
+        this.help = createJMenuItem("Help", null, KeyStroke.getKeyStroke(
+                KeyEvent.VK_H, KeyEvent.ALT_MASK));
         help.add(this.about);
+        help.add(this.help);
 
         this.zeros = createJMenuItem("Fill with zeros", null, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 KeyEvent.ALT_MASK));
@@ -190,6 +193,7 @@ public class MainWindow extends JFrame implements ActionListener {
         this.toolBarAbout = createJButtonToolBar("Show about", this.jtbAboutIcon24);
         this.toolBarSum = createJButtonToolBar("Sum values", this.jtbSumIcon24);
         this.toolBarAvg = createJButtonToolBar("Avg value", this.jtbAvgIcon24);
+        this.toolBarHelp = createJButtonToolBar("Help", this.jtbHelpIcon24);
 
         jToolBar.add(this.toolBarButtonExit);
         jToolBar.add(this.toolBarButtonSave);
@@ -202,6 +206,7 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.add(this.toolBarAvg);
         jToolBar.addSeparator();
         jToolBar.add(this.toolBarAbout);
+        jToolBar.add(this.toolBarHelp);
 
         return jToolBar;
     }
@@ -302,6 +307,7 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbSumIcon24 = createMyIcon("sum24.png");
             this.jtbAvgIcon24 = createMyIcon("avg24.png");
             this.mOpenIcon16 = createMyIcon("open16.png");
+            this.jtbHelpIcon24 = createMyIcon("help.png");
     }
 
     /**
@@ -453,6 +459,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if(e.getSource()==this.avg || e.getSource() == this.toolBarAvg){
             this.resultArea.append("Avg value: "+ (this.data.getAvg()) + '\n');
+        }
+
+        if (e.getSource()==this.help || e.getSource()==this.toolBarHelp){
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.setVisible(true);
         }
     }
 

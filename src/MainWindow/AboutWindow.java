@@ -9,10 +9,10 @@ public class AboutWindow extends JDialog {
     JLabel icon, author, version, email;
 
     public AboutWindow() {
-        this.setSize(setWindowSize());
-        this.setTitle("About");
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.setLocationRelativeTo(null);
+        setSize(setWindowSize());
+        setTitle("About");
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         Container contentPane = getContentPane();
         contentPane.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
