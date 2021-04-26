@@ -14,7 +14,6 @@ public class HelpWindow extends JDialog {
 
     public HelpWindow() {
         this.setTitle("HELP");
-        setLocationRelativeTo(null);
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
         this.editorPane = new JEditorPane();

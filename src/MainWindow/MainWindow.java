@@ -268,7 +268,9 @@ public class MainWindow extends JFrame implements ActionListener {
         JTable table = new JTable(this.data);
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(SwingConstants.RIGHT);
-        table.setDefaultRenderer(Float.class, rightRenderer);
+        for (int i=0; i<5;i++){
+            table.getColumnModel().getColumn(i).setCellRenderer(rightRenderer);
+        }
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, cc.xywh(2,3,12,6, CellConstraints.FILL, CellConstraints.FILL));
 
@@ -362,7 +364,6 @@ public class MainWindow extends JFrame implements ActionListener {
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 String fileToOpen = fileChooser2.getSelectedFile().toString();
                 try {
-                    System.out.println(fileToOpen);
                     Scanner in = new Scanner(new FileInputStream(fileToOpen));
                     this.data.readData(in);
 

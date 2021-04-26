@@ -84,14 +84,13 @@ public class Data extends AbstractTableModel {
      */
     public Float getAvg(){
         Float sum = (float) 0;
-        Float avg;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
                 sum += this.data[i][j];
             }
         }
-        avg = sum/(this.columnRowCount*this.columnRowCount);
-        return avg;
+
+        return sum/(this.columnRowCount*this.columnRowCount);
     }
 
     /**
@@ -166,7 +165,6 @@ public class Data extends AbstractTableModel {
      */
     public void saveData(PrintWriter out) {
         for (int i=0; i<5; i++){
-            //if (i>0)out.print('\n');
             for (int j=0;j<5;j++)
                 out.print(this.data[i][j] + "\n");
         }
@@ -185,5 +183,4 @@ public class Data extends AbstractTableModel {
         }
         fireTableDataChanged();
     }
-
 }
