@@ -7,11 +7,10 @@ import java.util.Scanner;
 
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;
-    private final String[] columnNames = new String[]{"A", "B", "C", "D", "E"};
-    private Float[][] data;
+    private float[][] data;
 
     public Data(){
-        this.data = new Float[columnRowCount][columnRowCount];
+        this.data = new float[columnRowCount][columnRowCount];
         setZeros();
         this.fireTableDataChanged();
     }
@@ -19,7 +18,7 @@ public class Data extends AbstractTableModel {
     /**
      * @return <code> data </code>-table containing all data
      */
-    public Float[][] getData() {
+    public float[][] getData() {
         return this.data;
     }
 
@@ -51,7 +50,7 @@ public class Data extends AbstractTableModel {
     /**
      * @return Minimum Value in the table
      */
-    public Float getMinimumValue(){
+    public float getMinimumValue(){
         Float minimum = null;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
@@ -63,14 +62,14 @@ public class Data extends AbstractTableModel {
                 }
             }
         }
-        return minimum;
+        return (float) minimum;
     }
 
     /**
      * @return <code>sum </code> of all values in the table
      */
-    public Float getSum(){
-        Float sum = (float) 0;
+    public float getSum(){
+        float sum = (float) 0;
             for (int i=0; i<columnRowCount; i++){
                 for (int j=0; j<columnRowCount; j++){
                     sum += this.data[i][j];
@@ -82,8 +81,8 @@ public class Data extends AbstractTableModel {
     /**
      * @return <code>avg</code> - average value from table
      */
-    public Float getAvg(){
-        Float sum = (float) 0;
+    public float getAvg(){
+        float sum = (float) 0;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
                 sum += this.data[i][j];
@@ -96,8 +95,8 @@ public class Data extends AbstractTableModel {
     /**
      * @return Maximum Value in the table
      */
-    public Float getMaximumValue(){
-        Float maximum = (float) 0;
+    public float getMaximumValue(){
+        float maximum = (float) 0;
         for (int i=0; i<columnRowCount; i++){
             for (int j=0; j<columnRowCount; j++){
                 if (maximum < this.data[i][j]) {

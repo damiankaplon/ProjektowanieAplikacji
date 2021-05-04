@@ -468,7 +468,7 @@ public class MainWindow extends JFrame implements ActionListener {
         }
     }
 
-
+    
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow();
         mainWindow.setVisible(true);
