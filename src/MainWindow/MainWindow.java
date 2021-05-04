@@ -29,7 +29,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
-    private final JComboBox operationList = new JComboBox(OPERATION_LIST);
+    private final ComboBoxModel comboBoxModel = new ComboBoxModel(OPERATION_LIST);
+    private final JComboBox operationList = new JComboBox(comboBoxModel);
     private JTextArea resultArea;
     private StatusBar statusBar = new StatusBar();
 
