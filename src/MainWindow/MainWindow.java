@@ -3,6 +3,8 @@ package MainWindow;
 import Data.Data;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.l2fprod.common.swing.JOutlookBar;
+
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -21,8 +23,9 @@ public class MainWindow extends JFrame implements ActionListener {
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table", "AVG",
             "SUM"};
 
-    private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, zerosCenter, saveCenter, exitCenter,
-            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, execute, toolBarHelp;
+    private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, saveOutlook, exitOutlook,
+            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, tipOutlook, calendarOutlook, chartOutlook,
+            zerosOutlook, sumOutlook, avgOutlook, setOutlook, randomOutlook, execute, toolBarHelp;
     private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, help, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
             jtbSetIcon24, jtbAboutIcon24,  jtbSumIcon24, jtbAvgIcon24, mOpenIcon16, jtbHelpIcon24;
@@ -30,9 +33,10 @@ public class MainWindow extends JFrame implements ActionListener {
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
     private final ComboBoxModel comboBoxModel = new ComboBoxModel(OPERATION_LIST);
-    private final JComboBox operationList = new JComboBox(comboBoxModel);
+    private final JComboBox<String> operationList = new JComboBox<>(comboBoxModel);
     private JTextArea resultArea;
-    private StatusBar statusBar = new StatusBar();
+    private final StatusBar statusBar = new StatusBar();
+    //private JOutlookBar jOutlookBar = new JOutlookBar();
 
     public MainWindow() {
         super("Zadanie 1 GUI v.1.0.1");
@@ -60,11 +64,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     /**
      * Calculates sizes of frame, based on properties of a screen.
-     * --------------------------------------------------------------
      * At the beginning default frameSize is set as 800, 600 through static final variables of the class
      * WIDTH_FRAME and HEIGHT_FRAME
-     * --------------------------------------------------------------
-     *
      * @return Dimension (frameSize) which is, calculated, preferred size for GUI
      */
     private Dimension setWindowSize() {
@@ -215,7 +216,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /**
      * @param tooltip - Description that appears on mouse over event
      * @param icon - buttons icon
-     * @return JButton with setted tooltip text, icon and added actionListner
+     * @return JButton with set tooltip text, icon and added actionListener
      */
     private  JButton createJButtonToolBar(String tooltip, Icon icon) {
         JButton jb = new JButton("", icon);
@@ -252,18 +253,8 @@ public class MainWindow extends JFrame implements ActionListener {
         JLabel columnNumberL = new JLabel("Column number: ");
         SpinnerNumberModel spinnerNumberModel2 = new SpinnerNumberModel(1, 1, 5, 1);
         this.columnNumber = new JSpinner(spinnerNumberModel2);
-        centerPanel.add(columnNumberL, cc.xyw(12,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
-        centerPanel.add(this.columnNumber, cc.xyw(15,2,2, CellConstraints.FILL, CellConstraints.CENTER));
-
-        this.saveCenter = new JButton("Save", this.jtbSaveIcon24);
-        this.saveCenter.addActionListener(this);
-        this.zerosCenter = new JButton("Reset", this.jtbZerosIcon24);
-        this.zerosCenter.addActionListener(this);
-        this.exitCenter = new JButton("exit", this.jtbExitIcon24);
-        this.exitCenter.addActionListener(this);
-        centerPanel.add(this.saveCenter, cc.xyw(15,4,2, CellConstraints.FILL, CellConstraints.FILL));
-        centerPanel.add(this.zerosCenter, cc.xyw(15,6,2,CellConstraints.FILL, CellConstraints.FILL));
-        centerPanel.add(this.exitCenter, cc.xyw(15,8,2,CellConstraints.FILL, CellConstraints.FILL));
+        centerPanel.add(columnNumberL, cc.xyw(11,2,2, CellConstraints.RIGHT, CellConstraints.CENTER));
+        centerPanel.add(this.columnNumber, cc.xyw(13,2,1, CellConstraints.FILL, CellConstraints.CENTER));
 
         this.data = new Data();
         JTable table = new JTable(this.data);
@@ -288,7 +279,10 @@ public class MainWindow extends JFrame implements ActionListener {
         JScrollPane scrollForResultsArea = new JScrollPane(this.resultArea);
         scrollForResultsArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black),
                 "Results"));
-        centerPanel.add(scrollForResultsArea, cc.xywh(2,12,13, 3, CellConstraints.FILL,
+        centerPanel.add(scrollForResultsArea, cc.xywh(2,12,12, 3, CellConstraints.FILL,
+                CellConstraints.FILL));
+
+        centerPanel.add(createJOutlookBar(), cc.xywh(14,2,3,13,CellConstraints.FILL,
                 CellConstraints.FILL));
 
         return centerPanel;
@@ -336,11 +330,11 @@ public class MainWindow extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit || e.getSource()==this.exitCenter){
+        if (e.getSource()==this.exit || e.getSource()==this.toolBarButtonExit || e.getSource()==this.exitOutlook){
             confirmExit();
         }
 
-        if (e.getSource()==this.saveCenter || e.getSource()==this.toolBarButtonSave || e.getSource()==this.saveToFile){
+        if (e.getSource()==this.saveOutlook || e.getSource()==this.toolBarButtonSave || e.getSource()==this.saveToFile){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Save to file");
             int userSelection = fileChooser.showSaveDialog(this);
@@ -382,7 +376,7 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource()==this.setRandom){
+        if (e.getSource()==this.setRandom || e.getSource() == this.randomOutlook){
             this.data.setRandom();
             this.resultArea.append("Table has been randomized" + '\n');
         }
@@ -423,7 +417,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 this.resultArea.append("Sum of values: "+ (this.data.getSum()) + '\n');
             }
         }
-        if (e.getSource()==this.toolBarSet || e.getSource()==this.set){
+        if (e.getSource()==this.toolBarSet || e.getSource()==this.set || e.getSource() == this.setOutlook){
             try {
                 Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
                 int chosenRow = (int) this.rowNumber.getValue() - 1;
@@ -437,7 +431,7 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == this.zeros || e.getSource() == this.zerosCenter || e.getSource() == this.toolBarZeros){
+        if (e.getSource() == this.zeros || e.getSource() == this.zerosOutlook || e.getSource() == this.toolBarZeros){
             this.data.setZeros();
             this.resultArea.append("Table has been reset" + '\n');
         }
@@ -455,11 +449,11 @@ public class MainWindow extends JFrame implements ActionListener {
             aboutWindow.setVisible(true);
         }
 
-        if(e.getSource() == this.toolBarSum || e.getSource()==this.sum){
+        if(e.getSource() == this.toolBarSum || e.getSource()==this.sum || e.getSource() == this.sumOutlook){
             this.resultArea.append("Sum of values: "+ (this.data.getSum()) + '\n');
         }
 
-        if(e.getSource()==this.avg || e.getSource() == this.toolBarAvg){
+        if(e.getSource()==this.avg || e.getSource() == this.toolBarAvg || e.getSource() == this.avgOutlook){
             this.resultArea.append("Avg value: "+ (this.data.getAvg()) + '\n');
         }
 
@@ -469,6 +463,66 @@ public class MainWindow extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * @return JOutlookBar
+     */
+    private JOutlookBar createJOutlookBar(){
+        this.saveOutlook = initializeButton("Save", null);
+        this.exitOutlook = initializeButton("Exit", null);
+        this.zerosOutlook = initializeButton("Reset", null);
+        JOutlookBar jOutlookBar = new JOutlookBar();
+        Component[] components = {
+                this.saveOutlook, this.zerosOutlook,  this.exitOutlook
+        };
+        jOutlookBar.add(createJOutlookBarTab(components));
+
+        this.tipOutlook = initializeButton("Tip", null);
+        this.calendarOutlook = initializeButton("Calendar", null);
+        this.chartOutlook = initializeButton("Chart", null);
+        Component[] components2 = {
+          this.chartOutlook, this.calendarOutlook, this.tipOutlook
+        };
+        jOutlookBar.add(createJOutlookBarTab(components2));
+
+        this.avgOutlook = initializeButton("Avg", null);
+        this.sumOutlook = initializeButton("Sum", null);
+        this.randomOutlook = initializeButton("Rand", null);
+        this.setOutlook = initializeButton("Set", null);
+        Component[] components3 = {
+                this.avgOutlook, this.sumOutlook, this.randomOutlook, this.setOutlook
+        };
+
+        jOutlookBar.add(createJOutlookBarTab(components3));
+        jOutlookBar.setTitleAt(0, "File");
+        jOutlookBar.setTitleAt(1, "Tools");
+        jOutlookBar.setTitleAt(2, "Calc");
+        return jOutlookBar;
+    }
+
+    /**
+     * @param components Array of components that will be added to tab tab
+     * @return JPanel that is addable to JOutlookBar
+     */
+    private JPanel createJOutlookBarTab(Component[] components){
+    JPanel jPanel = new JPanel();
+    jPanel.setLayout(new FlowLayout());
+    for (Component component : components){
+        jPanel.add(component);
+    }
+    return jPanel;
+    }
+
+    /**
+     * @param title text to set on button
+     * @param icon icon to set on button
+     * @return JButton with added action listener, icon and text
+     */
+    private JButton initializeButton(String title, Icon icon){
+        JButton jButton = new JButton(title, icon);
+        jButton.addActionListener(this);
+        jButton.setPreferredSize(new Dimension(100, 30));
+        return jButton;
+    }
     
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow();
