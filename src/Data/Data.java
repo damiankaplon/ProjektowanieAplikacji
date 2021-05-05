@@ -182,4 +182,18 @@ public class Data extends AbstractTableModel {
         }
         fireTableDataChanged();
     }
+
+    public int getOccurrences(float number){
+        int intNumber = (int) number;
+        int occurrences = 0;
+        for (int i=0; i<columnRowCount; i++){
+            for (int j=0; j<columnRowCount; j++){
+            int iteration = (int) this.data[i][j];
+                if (iteration == intNumber){
+                    occurrences += 1;
+                }
+            }
+        }
+        return occurrences;
+    }
 }

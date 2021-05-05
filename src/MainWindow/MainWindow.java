@@ -4,6 +4,9 @@ import Data.Data;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.l2fprod.common.swing.JOutlookBar;
+import javafx.scene.chart.PieChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 
 
 import javax.swing.*;
@@ -461,6 +464,11 @@ public class MainWindow extends JFrame implements ActionListener {
             HelpWindow helpWindow = new HelpWindow();
             helpWindow.setVisible(true);
         }
+
+        if (e.getSource() == this.chartOutlook){
+            ChartWindow chartWindow = new ChartWindow(this.data.getMaximumValue(), this.data.getMinimumValue(),
+                    this.data);
+        }
     }
 
     /**
@@ -523,7 +531,7 @@ public class MainWindow extends JFrame implements ActionListener {
         jButton.setPreferredSize(new Dimension(100, 30));
         return jButton;
     }
-    
+
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow();
         mainWindow.setVisible(true);
