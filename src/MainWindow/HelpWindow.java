@@ -9,8 +9,8 @@ import javax.swing.JScrollPane;
 
 public class HelpWindow extends JDialog {
     private static final long serialVersionUID = 1L;
-    private JEditorPane editorPane;
-    private URL url;
+    private final JEditorPane editorPane;
+    private final URL url;
 
     public HelpWindow() {
         this.setTitle("HELP");

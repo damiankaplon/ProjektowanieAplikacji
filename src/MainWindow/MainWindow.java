@@ -8,6 +8,9 @@ import com.l2fprod.common.swing.JTipOfTheDay;
 import com.l2fprod.common.swing.tips.DefaultTip;
 import com.l2fprod.common.swing.tips.DefaultTipModel;
 import javafx.scene.chart.PieChart;
+import org.freixas.jcalendar.DateEvent;
+import org.freixas.jcalendar.DateListener;
+import org.freixas.jcalendar.JCalendarCombo;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
@@ -44,6 +47,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private final ComboBoxModel comboBoxModel = new ComboBoxModel(OPERATION_LIST);
     private final JComboBox<String> operationList = new JComboBox<>(comboBoxModel);
     private JTextArea resultArea;
+    private JCalendarCombo calendarCombo;
     private final StatusBar statusBar = new StatusBar();
 
     public MainWindow() {
@@ -282,7 +286,7 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel.add(this.operationList, cc.xyw(7, 10, 3, CellConstraints.FILL, CellConstraints.CENTER));
         this.execute = new JButton("Execute");
         this.execute.addActionListener(this);
-        centerPanel.add(this.execute, cc.xyw(11, 10, 2, CellConstraints.FILL, CellConstraints.CENTER));
+        centerPanel.add(this.execute, cc.xyw(10, 10, 1, CellConstraints.RIGHT, CellConstraints.CENTER));
 
 
         this.resultArea = new JTextArea();
@@ -295,6 +299,18 @@ public class MainWindow extends JFrame implements ActionListener {
 
         centerPanel.add(createJOutlookBar(), cc.xywh(14,2,3,13,CellConstraints.FILL,
                 CellConstraints.FILL));
+
+        this.calendarCombo = new JCalendarCombo();
+        this.calendarCombo.addDateListener(new DateListener() {
+            @Override
+            public void dateChanged(DateEvent dateEvent) {
+                String date = String.valueOf(calendarCombo.getDate());
+                String dateStyled = date.substring(0, 10) + " " + date.substring(25, 29);
+                resultArea.append(dateStyled + '\n');
+            }
+        });
+        centerPanel.add(this.calendarCombo, cc.xyw(11, 10, 2, CellConstraints.RIGHT,
+                CellConstraints.CENTER));
 
         return centerPanel;
     }
@@ -481,6 +497,10 @@ public class MainWindow extends JFrame implements ActionListener {
             JTipOfTheDay jTipOfTheDay = new JTipOfTheDay(createTipModel(FILE_WITH_TIPS));
             jTipOfTheDay.showDialog(this);
         }
+
+        if (e.getSource() == this.calendarCombo){
+            this.resultArea.append(String.valueOf(this.calendarCombo.getDate()) + '\n');
+        }
     }
 
     /**
@@ -546,6 +566,10 @@ public class MainWindow extends JFrame implements ActionListener {
         return jButton;
     }
 
+    /**
+     * @param fileSource path to file containing tips. 1 tip 1 row.
+     * @return TipModel containing tips from certain file.
+     */
     private DefaultTipModel createTipModel(String fileSource) {
         DefaultTipModel tipModel = new DefaultTipModel();
         try {
