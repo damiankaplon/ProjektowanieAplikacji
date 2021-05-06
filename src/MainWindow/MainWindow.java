@@ -4,6 +4,9 @@ import Data.Data;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.l2fprod.common.swing.JOutlookBar;
+import com.l2fprod.common.swing.JTipOfTheDay;
+import com.l2fprod.common.swing.tips.DefaultTip;
+import com.l2fprod.common.swing.tips.DefaultTipModel;
 import javafx.scene.chart.PieChart;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -14,6 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static javax.swing.SwingConstants.RIGHT;
@@ -23,6 +27,8 @@ public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
     private static final int HEIGHT_FRAME = 600;
+    private static final String FILE_WITH_TIPS = "D:\\JavaProjects\\ProjektowanieAplikacji\\out\\production\\" +
+            "ProjektowanieAplikacji\\resources\\tips.txt";
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table", "AVG",
             "SUM"};
 
@@ -39,7 +45,6 @@ public class MainWindow extends JFrame implements ActionListener {
     private final JComboBox<String> operationList = new JComboBox<>(comboBoxModel);
     private JTextArea resultArea;
     private final StatusBar statusBar = new StatusBar();
-    //private JOutlookBar jOutlookBar = new JOutlookBar();
 
     public MainWindow() {
         super("Zadanie 1 GUI v.1.0.1");
@@ -63,6 +68,9 @@ public class MainWindow extends JFrame implements ActionListener {
         contentPane.add(createToolBar(), BorderLayout.NORTH);
         contentPane.add(createCenterPanel(), BorderLayout.CENTER);
         contentPane.add(this.statusBar, BorderLayout.SOUTH);
+
+        JTipOfTheDay jTipOfTheDay = new JTipOfTheDay(createTipModel(FILE_WITH_TIPS));
+        jTipOfTheDay.showDialog(this);
     }
 
     /**
@@ -466,8 +474,12 @@ public class MainWindow extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == this.chartOutlook){
-            ChartWindow chartWindow = new ChartWindow(this.data.getMaximumValue(), this.data.getMinimumValue(),
-                    this.data);
+            new ChartWindow(this.data.getMaximumValue(), this.data.getMinimumValue(), this.data);
+        }
+
+        if (e.getSource() == this.tipOutlook){
+            JTipOfTheDay jTipOfTheDay = new JTipOfTheDay(createTipModel(FILE_WITH_TIPS));
+            jTipOfTheDay.showDialog(this);
         }
     }
 
@@ -504,6 +516,7 @@ public class MainWindow extends JFrame implements ActionListener {
         jOutlookBar.setTitleAt(0, "File");
         jOutlookBar.setTitleAt(1, "Tools");
         jOutlookBar.setTitleAt(2, "Calc");
+
         return jOutlookBar;
     }
 
@@ -512,12 +525,13 @@ public class MainWindow extends JFrame implements ActionListener {
      * @return JPanel that is addable to JOutlookBar
      */
     private JPanel createJOutlookBarTab(Component[] components){
-    JPanel jPanel = new JPanel();
-    jPanel.setLayout(new FlowLayout());
-    for (Component component : components){
-        jPanel.add(component);
-    }
-    return jPanel;
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new FlowLayout());
+            for (Component component : components){
+            jPanel.add(component);
+            }
+        jPanel.setBackground(Color.LIGHT_GRAY);
+        return jPanel;
     }
 
     /**
@@ -528,8 +542,24 @@ public class MainWindow extends JFrame implements ActionListener {
     private JButton initializeButton(String title, Icon icon){
         JButton jButton = new JButton(title, icon);
         jButton.addActionListener(this);
-        jButton.setPreferredSize(new Dimension(100, 30));
+        jButton.setPreferredSize(new Dimension(101, 30));
         return jButton;
+    }
+
+    private DefaultTipModel createTipModel(String fileSource) {
+        DefaultTipModel tipModel = new DefaultTipModel();
+        try {
+            Scanner in = new Scanner(new FileInputStream(fileSource));
+            while (in.hasNextLine()) {
+                DefaultTip tip = new DefaultTip("", in.nextLine());
+                tipModel.add(tip);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Error while creating tips");
+        }
+        return tipModel;
     }
 
     public static void main(String[] args) {

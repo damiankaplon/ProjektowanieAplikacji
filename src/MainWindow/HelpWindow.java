@@ -18,6 +18,7 @@ public class HelpWindow extends JDialog {
         this.setLayout(new BorderLayout());
         this.editorPane = new JEditorPane();
         this.editorPane.setEditable(false);
+        this.setLocationRelativeTo(null);
         this.url = HelpWindow.class.getResource("/resources/help.html");
         try {
             this.editorPane.setPage(this.url);
