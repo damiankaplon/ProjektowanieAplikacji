@@ -7,12 +7,9 @@ import com.l2fprod.common.swing.JOutlookBar;
 import com.l2fprod.common.swing.JTipOfTheDay;
 import com.l2fprod.common.swing.tips.DefaultTip;
 import com.l2fprod.common.swing.tips.DefaultTipModel;
-import javafx.scene.chart.PieChart;
 import org.freixas.jcalendar.DateEvent;
 import org.freixas.jcalendar.DateListener;
 import org.freixas.jcalendar.JCalendarCombo;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
 
 
 import javax.swing.*;
@@ -20,7 +17,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import static javax.swing.SwingConstants.RIGHT;
@@ -36,7 +32,7 @@ public class MainWindow extends JFrame implements ActionListener {
             "SUM"};
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, saveOutlook, exitOutlook,
-            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, tipOutlook, calendarOutlook, chartOutlook,
+            toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, tipOutlook, chartOutlook,
             zerosOutlook, sumOutlook, avgOutlook, setOutlook, randomOutlook, execute, toolBarHelp;
     private JMenuItem exit, saveToFile, open, zeros, min, max, setRandom, about, help, set, sum, avg;
     private Icon mSaveIcon16, jtbSaveIcon24, mExitIcon16, jtbExitIcon24, jtbMinIcon24, jtbMaxIcon24, jtbZerosIcon24,
@@ -44,8 +40,8 @@ public class MainWindow extends JFrame implements ActionListener {
     private Data data;
     private JTextField enteredNumber;
     private JSpinner rowNumber, columnNumber;
-    private final ComboBoxModel comboBoxModel = new ComboBoxModel(OPERATION_LIST);
-    private final JComboBox<String> operationList = new JComboBox<>(comboBoxModel);
+    private final MyComboBoxModel<String> myComboBoxModel = new MyComboBoxModel<>(OPERATION_LIST);
+    private final JComboBox<String> operationList = new JComboBox<>(myComboBoxModel);
     private JTextArea resultArea;
     private JCalendarCombo calendarCombo;
     private final StatusBar statusBar = new StatusBar();
@@ -517,10 +513,9 @@ public class MainWindow extends JFrame implements ActionListener {
         jOutlookBar.add(createJOutlookBarTab(components));
 
         this.tipOutlook = initializeButton("Tip", null);
-        this.calendarOutlook = initializeButton("Calendar", null);
         this.chartOutlook = initializeButton("Chart", null);
         Component[] components2 = {
-          this.chartOutlook, this.calendarOutlook, this.tipOutlook
+          this.chartOutlook, this.tipOutlook
         };
         jOutlookBar.add(createJOutlookBarTab(components2));
 

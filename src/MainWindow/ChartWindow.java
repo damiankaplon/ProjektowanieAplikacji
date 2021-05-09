@@ -12,7 +12,7 @@ import java.awt.*;
 public class ChartWindow extends JDialog {
     public ChartWindow(float max, float min, Data data){
         super();
-        this.setTitle("HELP");
+        this.setTitle("Chart");
         this.setSize(800, 600);
         this.setLayout(new BorderLayout());
         DefaultPieDataset dataset = createDataset(max, min, data);
