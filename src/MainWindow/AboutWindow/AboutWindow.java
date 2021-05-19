@@ -1,4 +1,4 @@
-package MainWindow;
+package MainWindow.AboutWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +43,12 @@ public class AboutWindow extends JDialog {
         contentPane.add(this.email, c);
     }
 
+    /**
+     * Calculates sizes of frame, based on properties of a screen.
+     * At the beginning default frameSize is set as 800, 600 through static final variables of the class
+     * WIDTH_FRAME and HEIGHT_FRAME
+     * @return Dimension (frameSize) which is, calculated, preferred size for GUI
+     */
     private Dimension setWindowSize() {
         Dimension frameSize = new Dimension(400, 300);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -56,5 +62,4 @@ public class AboutWindow extends JDialog {
             frameSize.width = screenSize.width / 4;
         return frameSize;
     }
-
 }

@@ -3,6 +3,9 @@ package MainWindow;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class is responsible for StatusBar shown at the bottom of the window of the app
+ */
 public class StatusBar extends JPanel {
     private JLabel info;
     public StatusBar(){
@@ -11,9 +14,4 @@ public class StatusBar extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.add(this.info);
     }
-
-    public void statusBarSetText(String text){
-        this.info.setText(text);
-    }
-
 }

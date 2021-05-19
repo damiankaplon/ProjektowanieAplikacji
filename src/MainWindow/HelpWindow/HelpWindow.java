@@ -1,4 +1,4 @@
-package MainWindow;
+package MainWindow.HelpWindow;
 
 import java.awt.BorderLayout;
 import java.net.URL;

@@ -5,21 +5,19 @@ import java.util.Vector;
 
 
 public class MyComboBoxModel<E> extends AbstractListModel<E> implements javax.swing.ComboBoxModel<E> {
-    /*public ComboBoxModel(String[] objects) {
-        super(objects);
-    }*/
+
     Vector<E> objects;
     Object selectedObject;
 
+    /**
+     * Constructs an object which is a legal ComboBoxModel, containing elements, injected as 1dim array as a param.
+     * @param items 1dim array of elements to be contained in ComboBox
+     */
     public MyComboBoxModel(E[] items) {
         objects = new Vector<>(items.length);
         int i,c;
         for ( i=0,c=items.length;i<c;i++ )
             objects.addElement(items[i]);
-
-        if ( getSize() > 0 ) {
-            selectedObject = getElementAt( 0 );
-        }
     }
 
     /**

@@ -5,6 +5,9 @@ import javax.swing.table.AbstractTableModel;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * Class which is actual model of the table in the app. Lets to make basic operations and calculations
+ */
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;
     private float[][] data;
@@ -160,7 +163,7 @@ public class Data extends AbstractTableModel {
     }
 
     /**
-     * @param out - output stream
+     * @param out output stream
      */
     public void saveData(PrintWriter out) {
         for (int i=0; i<5; i++){
@@ -183,6 +186,10 @@ public class Data extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    /**
+     * @param number number to check
+     * @return occurrences of number
+     */
     public int getOccurrences(float number){
         int intNumber = (int) number;
         int occurrences = 0;

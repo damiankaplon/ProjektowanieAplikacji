@@ -1,15 +1,21 @@
 package MainWindow;
 
 import Data.Data;
+import MainWindow.AboutWindow.AboutWindow;
+import MainWindow.ChartWindow.ChartWindow;
+import MainWindow.HelpWindow.HelpWindow;
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.l2fprod.common.swing.JOutlookBar;
 import com.l2fprod.common.swing.JTipOfTheDay;
 import com.l2fprod.common.swing.tips.DefaultTip;
 import com.l2fprod.common.swing.tips.DefaultTipModel;
-import org.freixas.jcalendar.DateEvent;
-import org.freixas.jcalendar.DateListener;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.freixas.jcalendar.JCalendarCombo;
+
 
 
 import javax.swing.*;
@@ -18,6 +24,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.Scanner;
+
 
 import static javax.swing.SwingConstants.RIGHT;
 
@@ -30,6 +37,8 @@ public class MainWindow extends JFrame implements ActionListener {
             "ProjektowanieAplikacji\\resources\\tips.txt";
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table", "AVG",
             "SUM"};
+    private static final Logger LOG_CMD = LogManager.getLogger("LOG_CMD");
+    private static final Logger LOG_FILE = LogManager.getLogger("LOG_FILE");
 
     private JButton toolBarButtonExit, toolBarButtonSave, toolBarMin, toolBarMax, saveOutlook, exitOutlook,
             toolBarZeros, toolBarSet, toolBarAbout, toolBarSum, toolBarAvg, tipOutlook, chartOutlook,
@@ -68,9 +77,11 @@ public class MainWindow extends JFrame implements ActionListener {
         contentPane.add(createToolBar(), BorderLayout.NORTH);
         contentPane.add(createCenterPanel(), BorderLayout.CENTER);
         contentPane.add(this.statusBar, BorderLayout.SOUTH);
-
         JTipOfTheDay jTipOfTheDay = new JTipOfTheDay(createTipModel(FILE_WITH_TIPS));
         jTipOfTheDay.showDialog(this);
+        //We can see that the following log doesnt appear in the console because its lvl i to low
+        LOG_CMD.info("APP START!");
+        LOG_FILE.info("APP START!");
     }
 
     /**
@@ -103,6 +114,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 "Closing", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null,null,
                 JOptionPane.YES_OPTION);
         if (decision == JOptionPane.YES_OPTION) {
+            LOG_FILE.info("APP CLOSED");
             System.exit(0);
         }
     }
@@ -196,7 +208,6 @@ public class MainWindow extends JFrame implements ActionListener {
         jToolBar.setFloatable(false);
         jToolBar.add(Box.createHorizontalStrut(5));
 
-        //JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
         this.toolBarButtonExit = createJButtonToolBar("Exit", this.jtbExitIcon24);
         this.toolBarButtonSave = createJButtonToolBar("Save to file", this.jtbSaveIcon24);
         this.toolBarMax = createJButtonToolBar("Show max value", this.jtbMaxIcon24);
@@ -225,8 +236,8 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     /**
-     * @param tooltip - Description that appears on mouse over event
-     * @param icon - buttons icon
+     * @param tooltip Description that appears on mouse over event
+     * @param icon buttons icon
      * @return JButton with set tooltip text, icon and added actionListener
      */
     private  JButton createJButtonToolBar(String tooltip, Icon icon) {
@@ -237,7 +248,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     /**
-     * Creates main panel of an app. Contains Labels, JSpinners, JTextFields, JTable.
+     * Creates main panel of an app.
      * @return JPanel
      */
     private JPanel createCenterPanel(){
@@ -297,15 +308,12 @@ public class MainWindow extends JFrame implements ActionListener {
                 CellConstraints.FILL));
 
         this.calendarCombo = new JCalendarCombo();
-        this.calendarCombo.addDateListener(new DateListener() {
-            @Override
-            public void dateChanged(DateEvent dateEvent) {
-                String date = String.valueOf(calendarCombo.getDate());
-                String dateStyled = date.substring(0, 10) + " " + date.substring(25, 29);
-                resultArea.append(dateStyled + '\n');
-            }
+        this.calendarCombo.addDateListener(dateEvent -> {
+            String date = String.valueOf(calendarCombo.getDate());
+            String dateStyled = date.substring(0, 10) + " " + date.substring(25, 29);
+            resultArea.append(dateStyled + '\n');
         });
-        centerPanel.add(this.calendarCombo, cc.xyw(11, 10, 2, CellConstraints.RIGHT,
+        centerPanel.add(this.calendarCombo, cc.xyw(12, 10, 2, CellConstraints.RIGHT,
                 CellConstraints.CENTER));
 
         return centerPanel;
@@ -328,6 +336,7 @@ public class MainWindow extends JFrame implements ActionListener {
             this.jtbAvgIcon24 = createMyIcon("avg24.png");
             this.mOpenIcon16 = createMyIcon("open16.png");
             this.jtbHelpIcon24 = createMyIcon("help.png");
+            LOG_FILE.debug("CREATING ICONS - SUCCESS");
     }
 
     /**
@@ -342,6 +351,8 @@ public class MainWindow extends JFrame implements ActionListener {
         }
         catch (Exception e){
             System.out.println("ERROR while creating icon");
+            LOG_CMD.warn("ERROR WHILE CREATING ICON");
+            LOG_FILE.warn("ERROR WHILE CREATING ICON");
         }
         return icon;
     }
@@ -349,7 +360,7 @@ public class MainWindow extends JFrame implements ActionListener {
     /**
      * Invoked when an action occurs.
      *
-     * @param e - Action Event object
+     * @param e  Action Event object
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -421,17 +432,7 @@ public class MainWindow extends JFrame implements ActionListener {
                 this.resultArea.append("Table has been randomized" + '\n');
             }
             else if (chosenOperation == 3){
-                try {
-                    Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
-                    int chosenRow = (int) this.rowNumber.getValue() - 1;
-                    int chosenCol = (int) this.columnNumber.getValue() - 1;
-                    this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
-                }
-                catch (Exception e1) {
-                    this.resultArea.append("Not a valid value" + '\n');
-                    JOptionPane.showMessageDialog(this, "Not a valid value",
-                            "Alert!", JOptionPane.ERROR_MESSAGE);
-                }
+                checkTheValue();
             }
             else if (chosenOperation == 5){
                 this.resultArea.append("Avg value: "+ (this.data.getAvg()) + '\n');
@@ -441,17 +442,7 @@ public class MainWindow extends JFrame implements ActionListener {
             }
         }
         if (e.getSource()==this.toolBarSet || e.getSource()==this.set || e.getSource() == this.setOutlook){
-            try {
-                Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
-                int chosenRow = (int) this.rowNumber.getValue() - 1;
-                int chosenCol = (int) this.columnNumber.getValue() - 1;
-                this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
-            }
-            catch (Exception e1) {
-                this.resultArea.append("Not a valid value" + '\n');
-                JOptionPane.showMessageDialog(this, "Not a valid value",
-                        "Alert!", JOptionPane.ERROR_MESSAGE);
-            }
+            checkTheValue();
         }
 
         if (e.getSource() == this.zeros || e.getSource() == this.zerosOutlook || e.getSource() == this.toolBarZeros){
@@ -496,6 +487,24 @@ public class MainWindow extends JFrame implements ActionListener {
 
         if (e.getSource() == this.calendarCombo){
             this.resultArea.append(String.valueOf(this.calendarCombo.getDate()) + '\n');
+        }
+    }
+
+    /**
+     * Checks if typed in value is a proper, numeric value
+     */
+    private void checkTheValue() {
+        try {
+            Float enteredNumber = Float.parseFloat(this.enteredNumber.getText());
+            int chosenRow = (int) this.rowNumber.getValue() - 1;
+            int chosenCol = (int) this.columnNumber.getValue() - 1;
+            this.data.setValueAt(enteredNumber, chosenRow, chosenCol);
+        }
+        catch (Exception e1) {
+            this.resultArea.append("Not a valid value" + '\n');
+            JOptionPane.showMessageDialog(this, "Not a valid value",
+                    "Alert!", JOptionPane.ERROR_MESSAGE);
+            LOG_FILE.warn("TRIED TO PUSH INVALID VALUE");
         }
     }
 
@@ -583,6 +592,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow();
-        mainWindow.setVisible(true);
+       mainWindow.setVisible(true);
     }
 }

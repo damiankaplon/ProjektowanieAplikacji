@@ -1,4 +1,4 @@
-package MainWindow;
+package MainWindow.ChartWindow;
 
 import Data.Data;
 import org.jfree.chart.ChartFactory;
@@ -25,6 +25,10 @@ public class ChartWindow extends JDialog {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * @param dataset data from which create a Chart
+     * @return PieChart
+     */
     private JFreeChart createChart(DefaultPieDataset dataset) {
         JFreeChart pieChart = ChartFactory.createPieChart(
                 "Number Occurrences",
@@ -34,6 +38,12 @@ public class ChartWindow extends JDialog {
         return pieChart;
     }
 
+    /**
+     * @param max   max value form data to create Dataset
+     * @param min   start value from data to create Dataset
+     * @param data  data to create a dataset
+     * @return      Dataset
+     */
     private DefaultPieDataset createDataset(float max, float min, Data data) {
         int intMax = (int) max;
         int intMin = (int) min;
@@ -43,7 +53,6 @@ public class ChartWindow extends JDialog {
             if (occurrences == 0) continue;
             dataset.setValue("" + i, occurrences);
         }
-
         return dataset;
     }
 
