@@ -1,5 +1,5 @@
 # ProjektowanieAplikacji
-"App" made for school reason. Project to pass the semester
+"App" made for school reason. Project is basically made to pass the subject. It use old technologies, required by the lecturer
 
 # requirements
 <ul>
