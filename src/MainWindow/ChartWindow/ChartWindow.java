@@ -9,6 +9,11 @@ import org.jfree.data.general.DefaultPieDataset;
 import javax.swing.*;
 import java.awt.*;
 
+/** Represents a chart "pop up window"
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
+ */
 public class ChartWindow extends JDialog {
     public ChartWindow(float max, float min, Data data){
         super();

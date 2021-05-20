@@ -28,7 +28,11 @@ import java.util.Scanner;
 
 import static javax.swing.SwingConstants.RIGHT;
 
-
+/** Represents a Main Window
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
+ */
 public class MainWindow extends JFrame implements ActionListener {
 
     private static final int WIDTH_FRAME = 800;
@@ -504,6 +508,7 @@ public class MainWindow extends JFrame implements ActionListener {
             this.resultArea.append("Not a valid value" + '\n');
             JOptionPane.showMessageDialog(this, "Not a valid value",
                     "Alert!", JOptionPane.ERROR_MESSAGE);
+            LOG_CMD.warn("TRIED TO PUSH INVALID VALUE");
             LOG_FILE.warn("TRIED TO PUSH INVALID VALUE");
         }
     }

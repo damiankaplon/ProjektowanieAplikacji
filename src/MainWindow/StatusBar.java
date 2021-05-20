@@ -5,6 +5,10 @@ import java.awt.*;
 
 /**
  * This class is responsible for StatusBar shown at the bottom of the window of the app
+ * Represents an employee.
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
  */
 public class StatusBar extends JPanel {
     private JLabel info;

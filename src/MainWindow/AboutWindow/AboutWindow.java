@@ -3,7 +3,11 @@ package MainWindow.AboutWindow;
 import javax.swing.*;
 import java.awt.*;
 
-
+/** Represents a "pop up" AboutWindow
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
+ */
 public class AboutWindow extends JDialog {
 
     JLabel icon, author, version, email;

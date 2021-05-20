@@ -7,6 +7,10 @@ import java.util.Scanner;
 
 /**
  * Class which is actual model of the table in the app. Lets to make basic operations and calculations
+ * Represents an employee.
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
  */
 public class Data extends AbstractTableModel {
     private final int columnRowCount=5;

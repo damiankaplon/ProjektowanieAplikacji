@@ -3,7 +3,11 @@ package MainWindow;
 import javax.swing.*;
 import java.util.Vector;
 
-
+/** ComboBoxModel
+ * @author Damian Kaplon
+ * @author kaplon.damian99@gmail.com
+ * @version 1.0.1
+ */
 public class MyComboBoxModel<E> extends AbstractListModel<E> implements javax.swing.ComboBoxModel<E> {
 
     Vector<E> objects;

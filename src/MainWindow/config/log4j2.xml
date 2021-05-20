@@ -3,12 +3,12 @@
 
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%level] %d{yyyy-MM-dd HH:mm:ss} [%t] - %msg%n" />
+            <PatternLayout pattern="[%level] %d{yyyy-MM-dd HH:mm:ss} [%F] [%L] - %msg%n" />
         </Console>
 
         <File name="LogToFile" fileName="logs/log.log">
             <PatternLayout>
-                <Pattern>[%level] %d{yyyy-MM-dd HH:mm:ss} [%t] - %msg%n</Pattern>
+                <Pattern>[%level] %d{yyyy-MM-dd HH:mm:ss} [%F] [%L] - %msg%n</Pattern>
             </PatternLayout>
         </File>
     </Appenders>
