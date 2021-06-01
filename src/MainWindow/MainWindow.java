@@ -31,12 +31,21 @@ import static javax.swing.SwingConstants.RIGHT;
 /** Represents a Main Window
  * @author Damian Kaplon
  * @author kaplon.damian99@gmail.com
- * @version 1.0.1
+ * @version 1.0.1 Date: 22.05.2021
  */
 public class MainWindow extends JFrame implements ActionListener {
 
+    /**
+     * Default width of the window
+     */
     private static final int WIDTH_FRAME = 800;
+    /**
+     * Default height of the window
+     */
     private static final int HEIGHT_FRAME = 600;
+    /**
+     * Path to the file containing tips
+     */
     private static final String FILE_WITH_TIPS = "D:\\JavaProjects\\ProjektowanieAplikacji\\out\\production\\" +
             "ProjektowanieAplikacji\\resources\\tips.txt";
     private static final String[] OPERATION_LIST = {"Minimum", "Maximum", "Zeros", "Set", "Randomize table", "AVG",

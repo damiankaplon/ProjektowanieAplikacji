@@ -1,0 +1,89 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<project name = "PA" default = "Run-Project" basedir = ".">
+  <target name = "Init" >
+    <echo message = "Initialization..."/>
+    <property name = "dir.bin" value = "bin" />
+    <property name = "dir.src" value = "src" />
+    <property name = "dir.doc" value = "JavaDoc" />
+    <property name = "dir.lib" value = "src/lib" />
+    <property name = "p.Data" value = "${dir.src}/Data" />
+    <property name = "p.MainWindow" value = "${dir.src}/MainWindow" />
+    <property name = "p.AboutWindow" value = "${dir.src}/MainWindow/AboutWindow" />
+    <property name= "p.HelpWindow" value= "${dir.src}/MainWindow/HelpWindow" />
+    <property name= "p.ChartWindow" value= "${dir.src}/MainWindow/ChartWindow" />
+    <path id="class.path">
+      <fileset dir="src/lib">
+        <include name="**/*.jar" />
+      </fileset>
+    </path>
+    <path id="class.path2">
+      <fileset dir="src/lib">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir = "bin">
+        <include name="Data/*.class" />
+        <include name="MainWindow/*.class" />
+        <include name="MainWindow/**/*.class" />
+      </fileset>
+    </path>
+  </target>
+
+  <target name = "Clean" depends = "Init" >
+    <echo message = "Deleting... "/>
+    <delete dir = "${dir.bin}" />
+    <delete dir = "${dir.doc}" />
+  </target>
+
+  <target name = "Prepare" depends = "Clean" >
+    <echo message = "Preparing project structure"/>
+    <mkdir dir = "${dir.bin}"/>
+    <mkdir dir = "${dir.doc}" />
+  </target>
+
+  <target name = "Compile-Data" depends = "Init, Prepare, Clean">
+    <echo message = "Compiling package Data..." />
+    <javac srcdir = "${p.Data}" destdir = "${dir.bin}">
+      <classpath  refid="class.path">
+      </classpath>
+    </javac>
+  </target>
+
+  <target name = "Compile-AboutWindow" depends = "Compile-Data">
+    <echo message = "Compiling package AboutWindow..." />
+    <javac srcdir="${p.AboutWindow}" destdir="${dir.bin}">
+      <classpath refid="class.path" />
+    </javac>
+  </target>
+
+  <target name = "Compile-chart" depends = "Compile-AboutWindow">
+    <echo message = "Compiling package ChartWindow..." />
+    <javac srcdir = "${p.ChartWindow}" destdir = "${dir.bin}">
+      <classpath  refid="class.path">
+      </classpath>
+    </javac>
+  </target>
+
+
+
+  <target name = "Compile-HelpWindow" depends = "Compile-chart">
+    <echo message = "Compiling package HelpWindow..." />
+    <javac srcdir="${p.HelpWindow}" destdir="${dir.bin}">
+      <classpath refid="class.path" />
+    </javac>
+  </target>
+
+  <target name = "Compile-MainWindow" depends = "Compile-HelpWindow">
+    <echo message = "Compiling package MainWindow..." />
+    <javac srcdir="${p.MainWindow}" destdir="${dir.bin}">
+      <classpath refid="class.path2" />
+    </javac>
+  </target>
+
+  <target name = "Run-Project" depends = "Compile-MainWindow">
+    <echo message = "App start!" />
+    <java classname="bin/MainWindow">
+      <classpath refid="class.path" />
+    </java>
+  </target>
+
+</project>
