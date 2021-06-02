@@ -6,3 +6,4 @@ src/resources/
 lib/
 src/lib/
 bin/
+dist/

@@ -17,12 +17,12 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="log4j-api-2.14.1-javadoc" level="project" />
-    <orderEntry type="library" name="jgoodies-binding-2.13.0-javadoc" level="project" />
+    <orderEntry type="library" name="jgoodies" level="project" />
+    <orderEntry type="library" name="log4j" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jfreechart/jfreechart-1.0.19.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jfreechart/jcommon-1.0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -31,7 +31,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jfreechart/junit-4.11.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jfreechart/jfreechart-1.0.19.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -40,7 +40,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/l2fprod/l2fprod-common-all-6.9.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jfreechart/junit-4.11.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -49,7 +49,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/l2fprod/l2fprod-common-outlookbar-6.9.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/l2fprod/l2fprod-common-all-6.9.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -58,7 +58,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jcommon-1.0.8/jcommon-1.0.8-junit.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/l2fprod/l2fprod-common-outlookbar-6.9.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -67,25 +67,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jcommon-1.0.8/jcommon-1.0.8.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jcommon-1.0.8/jcommon-xml-1.0.8.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/lib/jcalendar/jcalendar.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jcalendar/jcalendar.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

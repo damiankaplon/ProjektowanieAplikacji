@@ -1,88 +1,125 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-<project name = "PA" default = "Run-Project" basedir = ".">
+<project name = "PA" default = "run" basedir = ".">
+
   <target name = "Init" >
     <echo message = "Initialization..."/>
     <property name = "dir.bin" value = "bin" />
     <property name = "dir.src" value = "src" />
     <property name = "dir.doc" value = "JavaDoc" />
-    <property name = "dir.lib" value = "src/lib" />
+    <property name = "dir.lib" value = "lib" />
+    <property name = "bin.lib" value = "${dir.bin}/lib" />
     <property name = "p.Data" value = "${dir.src}/Data" />
     <property name = "p.MainWindow" value = "${dir.src}/MainWindow" />
     <property name = "p.AboutWindow" value = "${dir.src}/MainWindow/AboutWindow" />
     <property name= "p.HelpWindow" value= "${dir.src}/MainWindow/HelpWindow" />
     <property name= "p.ChartWindow" value= "${dir.src}/MainWindow/ChartWindow" />
+
     <path id="class.path">
-      <fileset dir="src/lib">
+      <fileset dir="${bin.lib}">
         <include name="**/*.jar" />
       </fileset>
     </path>
+
     <path id="class.path2">
-      <fileset dir="src/lib">
+      <fileset dir="${bin.lib}">
         <include name="**/*.jar" />
       </fileset>
-      <fileset dir = "bin">
-        <include name="Data/*.class" />
-        <include name="MainWindow/*.class" />
-        <include name="MainWindow/**/*.class" />
+      <fileset dir = "${dir.bin}">
+        <include name="***" />
       </fileset>
     </path>
+
   </target>
 
   <target name = "Clean" depends = "Init" >
     <echo message = "Deleting... "/>
     <delete dir = "${dir.bin}" />
     <delete dir = "${dir.doc}" />
+    <delete dir = "${dir.bin}/resources" />
+    <delete dir = "dist" />
+    <delete file = "logs/log.log" />
+    <delete dir = "logs" />
   </target>
 
   <target name = "Prepare" depends = "Clean" >
     <echo message = "Preparing project structure"/>
     <mkdir dir = "${dir.bin}"/>
     <mkdir dir = "${dir.doc}" />
+    <mkdir dir = "${dir.bin}/resources" />
+    <mkdir dir = "dist" />
+    <mkdir dir = "${dir.bin}/MainWindow/config" />
+    <copy todir="${dir.bin}/resources" >
+      <fileset dir="${dir.src}/resources" includes="**"/>
+    </copy>
+    <copy todir="${dir.bin}/MainWindow/config" >
+      <fileset dir="${dir.src}/MainWindow/config" includes="**"/>
+    </copy>
+    <mkdir dir = "${dir.bin}/lib" />
+    <copy todir="${dir.bin}/lib" >
+      <fileset dir="lib" includes="**/*.jar"/>
+    </copy>
   </target>
 
   <target name = "Compile-Data" depends = "Init, Prepare, Clean">
     <echo message = "Compiling package Data..." />
-    <javac srcdir = "${p.Data}" destdir = "${dir.bin}">
-      <classpath  refid="class.path">
-      </classpath>
+    <javac srcdir = "${p.Data}" destdir = "${dir.bin}" includeantruntime="false">
+      <classpath  refid="class.path" />
+
     </javac>
   </target>
 
   <target name = "Compile-AboutWindow" depends = "Compile-Data">
     <echo message = "Compiling package AboutWindow..." />
-    <javac srcdir="${p.AboutWindow}" destdir="${dir.bin}">
+    <javac srcdir="${p.AboutWindow}" destdir="${dir.bin}" includeantruntime="false">
       <classpath refid="class.path" />
     </javac>
   </target>
 
   <target name = "Compile-chart" depends = "Compile-AboutWindow">
     <echo message = "Compiling package ChartWindow..." />
-    <javac srcdir = "${p.ChartWindow}" destdir = "${dir.bin}">
+    <javac srcdir = "${p.ChartWindow}" destdir = "${dir.bin}" includeantruntime="false">
       <classpath  refid="class.path">
       </classpath>
     </javac>
   </target>
 
-
-
   <target name = "Compile-HelpWindow" depends = "Compile-chart">
     <echo message = "Compiling package HelpWindow..." />
-    <javac srcdir="${p.HelpWindow}" destdir="${dir.bin}">
+    <javac srcdir="${p.HelpWindow}" destdir="${dir.bin}" includeantruntime="false">
       <classpath refid="class.path" />
     </javac>
   </target>
 
   <target name = "Compile-MainWindow" depends = "Compile-HelpWindow">
     <echo message = "Compiling package MainWindow..." />
-    <javac srcdir="${p.MainWindow}" destdir="${dir.bin}">
+    <javac srcdir="${p.MainWindow}" destdir="${dir.bin}" includeantruntime="false">
       <classpath refid="class.path2" />
     </javac>
   </target>
 
-  <target name = "Run-Project" depends = "Compile-MainWindow">
-    <echo message = "App start!" />
-    <java classname="bin/MainWindow">
-      <classpath refid="class.path" />
+  <target name="JAR" depends="Compile-MainWindow">
+
+    <jar destfile="dist/PA.jar" basedir="${dir.bin}">
+      <manifest>
+        <attribute name="Main-Class" value="MainWindow/MainWindow"/>
+      </manifest>
+      <zipgroupfileset dir="${bin.lib}" includes="**/*.jar"/>
+      <zipgroupfileset dir="${bin.lib}" includes="***/**/*.jar"/>
+
+    </jar>
+
+  </target>
+
+  <target name="DOC" depends="JAR">
+    <javadoc sourcepath="${dir.src}" destdir="${dir.doc}" access="private">
+      <classpath refid="class.path2" />
+    </javadoc>
+  </target>
+
+  <target name="run" depends="DOC" >
+    <echo message = "Start aplikacji..." />
+    <java classname="MainWindow.MainWindow" classpath="bin" >
+      <classpath refid="class.path2" />
     </java>
   </target>
 
